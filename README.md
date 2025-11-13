@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/wrediaco/vompt/main/icon.png" alt="Vompt Logo" width="120" height="120">
+<img src="https://raw.githubusercontent.com/wrediam/Vompt/refs/heads/main/icon.png" alt="Vompt Logo" width="120" height="120">
 
 # Vompt - AI-Powered Teleprompter
 
