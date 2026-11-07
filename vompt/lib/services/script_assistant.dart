@@ -56,12 +56,14 @@ class ScriptAssistant {
       "three-word fragments. Keep the speaker's meaning, facts, names and "
       'numbers. Never invent facts, prices, dates or claims. Reply with the '
       'script text only: no title, no introduction, no notes, no quotation '
-      'marks, no markdown.';
+      'marks, no markdown. Never use em dashes or en dashes; use a comma or a '
+      'period instead.';
 
   static const _coachVoice =
       'You are a speaking coach. You give short, specific, encouraging advice '
       'based on data from a practice read of a teleprompter script. Plain '
-      'sentences, no markdown, no headings, no numbering.';
+      'sentences, no markdown, no headings, no numbering, and no em dashes or en '
+      'dashes.';
 
   ({bool available, String? reason})? _availability;
 
@@ -297,8 +299,28 @@ class ScriptAssistant {
   @visibleForTesting
   static String cleanForTest(String s) => _clean(s);
 
+  static final _dash = r'(?:[\u2012\u2013\u2014\u2015\u2E3A\u2E3B]|--)';
+  static final _numberRange = RegExp(r'(\d)\s*' + _dash + r'\s*(\d)');
+  static final _lineStartDash = RegExp(r'^[ \t]*' + _dash + r'[ \t]*', multiLine: true);
+  static final _lineEndDash = RegExp(r'[ \t]*' + _dash + r'[ \t]*$', multiLine: true);
+  static final _midDash = RegExp(r'[ \t]*' + _dash + r'[ \t]*');
+  static final _spacedHyphen = RegExp(r'(?<=\S)[ \t]+-[ \t]+(?=\S)');
+
+  /// Rewrites em and en dashes (and "--" or a spaced hyphen used as one) into
+  /// plain punctuation. Dashes glue words into one on-screen token, which
+  /// throws off the prompter's highlighting, and they read badly aloud.
+  /// Hyphenated words like "five-minute" are left alone.
+  static String removeDashes(String text) => text
+      .replaceAllMapped(_numberRange, (m) => '${m[1]} to ${m[2]}')
+      .replaceAll(_lineStartDash, '')
+      .replaceAll(_lineEndDash, '')
+      .replaceAll(_midDash, ', ')
+      .replaceAll(_spacedHyphen, ', ')
+      .replaceAllMapped(RegExp(r',\s*([,.;:!?])'), (m) => m[1]!)
+      .replaceAll(RegExp(r'[ \t]{2,}'), ' ');
+
   static String _clean(String raw) {
-    var s = raw
+    var s = removeDashes(raw)
         .trim()
         .replaceAll('**', '')
         .replaceAll(RegExp(r'^#+\s*', multiLine: true), '');
