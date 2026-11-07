@@ -9,6 +9,7 @@ docs/images/studio-live.png (Vompt Studio's Live tab).
 Outputs in store/marketing/:
   header-3840x1646.png        product page header (21:9)
   search-3840x2560.png        search results asset (3:2)
+  universal-5244x2950.png     16:9 PNG accepted for both header and search
   <device>/<n>-<scene>.png    captioned screenshots per device slot
 
 Copy leads with what sets Vompt apart: voice tracking, the browser remote,
@@ -242,6 +243,17 @@ def screenshot(device, scene, headline, sub, index):
     return path
 
 
+def hero(canvas, left, top, width, phone_width, center=None, phone_shift=0.18):
+    """Studio window fully in frame, with the phone it drives overlapping the
+    window's lower-left corner. With `center`, the group is centered on that y."""
+    br = browser(studio(), width)
+    ph = phone(load("iphone-6.9", "1-prompter.png"), phone_width)
+    if center is not None:
+        top = center - (br.height + ph.height * 0.60) / 2
+    place(canvas, br, left, top)
+    place(canvas, ph, left - phone_width * phone_shift, top + br.height - ph.height * 0.40)
+
+
 def header():
     """21:9 product page header: the pitch on the left, Studio driving the phone on the right."""
     w, h = 3840, 1646
@@ -249,11 +261,7 @@ def header():
     size = 150
     caption(canvas, w * 0.06 + size * 0.7, h * 0.30, w * 0.33, "Your voice runs the prompter.",
             "Voice tracking, a browser remote\nand on-device AI. Private and free.", size)
-    # Studio bleeds off the right edge; the phone sits in front of it.
-    br = browser(studio(), w * 0.60)
-    place(canvas, br, w * 0.44, h * 0.10)
-    ph = phone(load("iphone-6.9", "1-prompter.png"), w * 0.29)
-    place(canvas, ph, w * 0.395, h * 0.93 - ph.height)
+    hero(canvas, w * 0.45, h * 0.09, w * 0.51, w * 0.25)
     path = OUT / "header-3840x1646.png"
     path.parent.mkdir(parents=True, exist_ok=True)
     canvas.convert("RGB").save(path, optimize=True)
@@ -274,7 +282,21 @@ def search():
     return path
 
 
+def universal():
+    """16:9 PNG that App Store Connect accepts for both header and search results."""
+    w, h = 5244, 2950
+    canvas = background(w, h).convert("RGBA")
+    size = 230
+    caption(canvas, w * 0.06 + size * 0.7, h * 0.355, w * 0.34, "Your voice runs the prompter.",
+            "Voice tracking, a browser remote\nand on-device AI. Private and free.", size)
+    hero(canvas, w * 0.47, 0, w * 0.50, w * 0.29, center=h * 0.5, phone_shift=0.10)
+    path = OUT / "universal-5244x2950.png"
+    canvas.convert("RGB").save(path, optimize=True)
+    return path
+
+
 if __name__ == "__main__":
+    print(universal().relative_to(ROOT))
     print(header().relative_to(ROOT))
     print(search().relative_to(ROOT))
     for device in DEVICES:
