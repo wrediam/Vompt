@@ -252,7 +252,7 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
     <div class="mark">Vompt<span>Studio</span></div>
     <div class="presence" id="presence"><i class="dot" id="presenceDot"></i><span id="presenceText">Connecting to iPhone</span></div>
     <div class="spacer"></div>
-    <button class="btn primary" id="sendBtn" disabled>Send<span class="send-long">&nbsp;to prompter</span></button>
+    <button class="btn primary" id="sendBtn" disabled><span>Send<span class="send-long"> to prompter</span></span></button>
   </header>
 
   <aside class="library" aria-label="Scripts">
@@ -679,6 +679,7 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
   }
 
   function renderPreviewText() {
+    state.firstPaint = true;
     const box = $("previewText");
     box.replaceChildren();
     let p = el("p");
@@ -716,7 +717,10 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
       const target = spans[Math.max(0, idx)];
       const scroller = $("previewScroll");
       const top = idx < 0 || !target ? 0 : target.offsetTop - lineTop;
-      scroller.scrollTo({ top: Math.max(0, top), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      // Jump straight there when a script first appears; glide between words.
+      const instant = state.firstPaint || matchMedia("(prefers-reduced-motion: reduce)").matches;
+      state.firstPaint = false;
+      scroller.scrollTo({ top: Math.max(0, top), behavior: instant ? "auto" : "smooth" });
     }
   }
 
@@ -875,6 +879,8 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
   api("/api/client/connect", { method: "POST" }).then(() => setPresence(true), () => setPresence(false));
   loadDocs().then(() => { if (state.docs[0] && innerWidth > 900) openDoc(state.docs[0].id); });
   checkAI();
+  // studio/#live opens straight to the prompter controls.
+  if (location.hash === "#live") { selectTab("live"); setView("side"); }
   setInterval(heartbeat, 3000);
   setInterval(poll, 400);
   poll();

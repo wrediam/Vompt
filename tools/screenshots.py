@@ -21,17 +21,19 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 APP = ROOT / "vompt/build/ios/iphonesimulator/Runner.app"
 OUT = ROOT / "store/screenshots"
 
-# App Store Connect sizes: 6.9" iPhone (1320 x 2868) and 13" iPad (2064 x 2752).
-# Smaller devices are scaled from these by App Store Connect.
+# App Store Connect sizes: 6.3" iPhone (1206 x 2622, required), 6.9" iPhone
+# (1320 x 2868), 13" iPad (2064 x 2752, required) and iPhone Duo.
 DEVICES = {
-    "iphone-6.9": "iPhone 17 Pro Max",
-    "ipad-13": "iPad Pro 13-inch (M5)",
+    "iphone-6.3": "iPhone 17 Pro",       # required slot (Dynamic Island, medium)
+    "iphone-6.9": "iPhone 17 Pro Max",   # optional (Dynamic Island, large)
+    "ipad-13": "iPad Pro 13-inch (M5)",  # required when the app runs on iPad
+    "iphone-duo": "iPhone Duo",          # optional until April 2027; adds a Duo badge
 }
 
 # Degrees to turn the portrait framebuffer for landscape scenes. iPads that
 # support multitasking can't force landscape, so the prompter there stays in
 # portrait and needs no turn.
-LANDSCAPE_TURN = {"iphone-6.9": 270, "ipad-13": 0}
+LANDSCAPE_TURN = {"iphone-6.3": 270, "iphone-6.9": 270, "ipad-13": 0, "iphone-duo": 270}
 
 # (file name, showcase scene, orientation)
 SCENES = [
@@ -57,12 +59,15 @@ def find_device(name):
         version = tuple(int(p) for p in runtime.rsplit("iOS-", 1)[-1].split("-") if p.isdigit())
         matches += [(version, d["udid"]) for d in entries if d["name"] == name]
     if not matches:
-        sys.exit(f"No simulator named {name!r}. Create one in Xcode > Window > Devices and Simulators.")
+        return None
     return max(matches)[1]
 
 
 def capture(device_key, name):
     udid = find_device(name)
+    if udid is None:
+        print(f"{device_key}: skipped, no {name!r} simulator (iPhone Duo needs the iOS 27.2 simulator runtime)")
+        return
     bundle = plistlib.loads((APP / "Info.plist").read_bytes())["CFBundleIdentifier"]
     run("xcrun", "simctl", "boot", udid, check=False)
     run("xcrun", "simctl", "bootstatus", udid, "-b")

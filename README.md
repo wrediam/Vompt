@@ -69,7 +69,7 @@ The engine is covered by tests that replay real recognizer output, including ad-
 Turn on Remote in the app and open the link on a computer on the same Wi-Fi. Studio is served by the phone itself; nothing goes through the internet, and the link carries a private key that changes each time.
 
 <p align="center">
-  <img src="docs/images/studio.png" alt="Vompt Studio in a desktop browser: script library, editor and Assist tools" width="820">
+  <img src="docs/images/studio-live.png" alt="Vompt Studio in a desktop browser, running a take live: script, prompter preview, pace and filler count" width="820">
 </p>
 
 ## Build from source

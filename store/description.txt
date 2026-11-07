@@ -1,28 +1,33 @@
-Vompt is a teleprompter that listens. Read your script at your own pace and the screen follows your voice: the word you're on lights up, and the current line stays on the reading mark. Skip a line, go back, or ad-lib, and Vompt catches up after a few words.
+Your voice runs the prompter. Read your script at your own pace and Vompt follows along: the word you're on lights up, and the current line stays on the reading mark. Skip a line, go back, or ad-lib, and it catches up after a few words.
 
-When the take ends, you see how it went.
+FOLLOWS YOUR VOICE
+Vompt listens with Apple's on-device speech recognition and tracks your place word by word, about half a second behind you. No scroll speed to set, no foot pedal, no one running the prompter for you.
 
-HOW YOUR TAKE WENT
-• Pace in words a minute, compared with a comfortable 130 to 165
-• Every "um", "uh", "like" and "you know", counted and broken down
-• Sentences you skipped, quoted so you can find them
-• Words that didn't match the script, restarts, and long pauses
-• Short coaching notes from Apple Intelligence on supported devices
+RUN IT FROM YOUR BROWSER
+Turn on Vompt Studio and open the link on a laptop or tablet on the same Wi-Fi. Your iPhone serves the page itself, so nothing goes through the internet.
+• Write and edit scripts with a real keyboard
+• Send a script to the prompter with one click
+• Start, pause, change text size and mirror the display
+• Watch a live preview with the current word, time, pace and filler count
+• See the take summary the moment you finish
+A private link, new every session, keeps your scripts away from others on shared Wi-Fi.
 
-PRACTICE THAT ADDS UP
-Every take is saved with its script. Watch your fillers a minute fall from one take to the next.
-
-WRITE BETTER SCRIPTS
-Assist uses Apple Intelligence, on your iPhone, to:
+ON-DEVICE AI
+Assist uses Apple Intelligence on your iPhone, in the app and in Studio:
 • Make a script sound spoken instead of written
 • Tighten it without losing a point
 • Fit it to 30 seconds, a minute, or any length
 • Fix spelling and grammar
 • Suggest opening lines that hook viewers
 • Draft a script from your bullet points
+After each take, it also writes short coaching notes from your results. Your script never leaves the device.
 
-RUN IT FROM YOUR COMPUTER
-Turn on Vompt Studio and open the link on a laptop on the same Wi-Fi. Write with a real keyboard, use Assist, send a script to the prompter, and start, pause and watch the take live, with the phone on its stand.
+HOW YOUR TAKE WENT
+• Pace in words a minute, compared with a comfortable 130 to 165
+• Every "um", "uh", "like" and "you know", counted and broken down
+• Sentences you skipped, quoted so you can find them
+• Words that didn't match the script, restarts, and long pauses
+Every take is saved with its script, so you can watch your fillers a minute fall.
 
 MADE FOR REAL SETUPS
 • Mirror mode for beam-splitter teleprompter glass
@@ -32,7 +37,7 @@ MADE FOR REAL SETUPS
 • Keeps the screen awake while you read
 
 PRIVATE BY DESIGN
-Speech is recognized on the device. Nothing is recorded or uploaded, there's no account, and there are no ads or tracking. Your scripts stay on your iPhone.
+Speech is recognized on the device. Nothing is recorded or uploaded, there's no account, and there are no ads or tracking.
 
 Vompt is free and its source code is public.
 
