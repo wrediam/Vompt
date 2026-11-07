@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Vompt Studio</title>
+<style>
+@font-face {
+  font-family: "Atkinson";
+  src: url("/font.ttf") format("truetype");
+  font-weight: 200 800;
+  font-display: swap;
+}
+:root {
+  --ink: #16161D;
+  --raised: #20212A;
+  --raised-2: #282A35;
+  --line: #2E3039;
+  --paper: #ECEAE4;
+  --muted: #8C8E9B;
+  --tally: #F2493B;
+  --cue: #FFC24A;
+  --on-cue: #1C1607;
+  --good: #6FCF97;
+  --radius: 12px;
+  --font: "Atkinson", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font: 400 16px/1.5 var(--font);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, textarea, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--cue); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* ---- Frame ---- */
+.app {
+  display: grid;
+  grid-template-rows: 60px minmax(0, 1fr);
+  grid-template-columns: 280px minmax(0, 1fr) 420px;
+  grid-template-areas: "top top top" "lib edit side";
+  height: 100dvh;
+}
+.app > * { min-width: 0; }
+header.top {
+  grid-area: top;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+.mark { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+.mark span { color: var(--muted); font-weight: 600; margin-left: 6px; }
+.presence { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; font-weight: 600; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); flex: none; }
+.dot.live { background: var(--tally); box-shadow: 0 0 10px rgba(242, 73, 59, .7); }
+.dot.ok { background: var(--good); }
+.spacer { flex: 1; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 40px; padding: 0 18px;
+  border-radius: 999px; border: 1.5px solid var(--line);
+  background: transparent; cursor: pointer; font-weight: 700; font-size: 15px;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--raised); }
+.btn:disabled { opacity: .4; cursor: default; background: transparent; }
+.btn.primary { background: var(--cue); border-color: var(--cue); color: var(--on-cue); }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn.live { background: var(--tally); border-color: var(--tally); color: #fff; }
+.btn.quiet { border-color: transparent; color: var(--muted); }
+.btn.quiet:hover { color: var(--paper); }
+.btn.small { min-height: 34px; padding: 0 14px; font-size: 14px; }
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 50%; border: 0;
+  background: var(--raised); cursor: pointer; display: grid; place-items: center;
+  font-weight: 800; font-size: 18px;
+}
+.icon-btn:hover { background: var(--raised-2); }
+
+/* ---- Library ---- */
+.library { grid-area: lib; border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+.library-head { display: flex; align-items: center; padding: 16px 16px 8px 20px; }
+.library-head h2 { margin: 0; font-size: 17px; font-weight: 800; flex: 1; }
+.search { margin: 4px 16px 8px; }
+.field {
+  width: 100%; background: var(--raised); border: 1.5px solid transparent;
+  border-radius: var(--radius); padding: 10px 14px; outline: none;
+}
+.field:focus { border-color: var(--cue); }
+.field::placeholder { color: var(--muted); }
+.scripts { list-style: none; margin: 0; padding: 0 8px 16px; overflow: auto; flex: 1; }
+.scripts li button {
+  width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
+  padding: 12px 12px; border-radius: 10px; display: block;
+}
+.scripts li button:hover { background: var(--raised); }
+.scripts li button[aria-current="true"] { background: var(--raised-2); }
+.scripts .t { display: block; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.scripts .m { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+.scripts .on-air { color: var(--tally); font-weight: 700; }
+.empty-note { color: var(--muted); padding: 12px 20px; font-size: 14px; }
+
+/* ---- Editor ---- */
+.editor { grid-area: edit; display: flex; flex-direction: column; min-height: 0; }
+.editor-inner { flex: 1; display: flex; flex-direction: column; min-height: 0; width: 100%; max-width: 760px; margin: 0 auto; padding: 28px 32px 0; }
+.title-input {
+  font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2;
+  background: none; border: 0; outline: none; padding: 0 0 14px; width: 100%;
+}
+.title-input::placeholder { color: var(--muted); }
+.script-input {
+  flex: 1; min-height: 0; resize: none; background: none; border: 0; outline: none;
+  font-size: 19px; line-height: 1.65; padding: 0 0 40px;
+}
+.script-input::placeholder { color: var(--muted); }
+.editor-foot {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  border-top: 1px solid var(--line); padding: 12px 32px; color: var(--muted); font-size: 14px;
+}
+.editor-foot b { color: var(--paper); font-weight: 700; }
+.editor-actions { display: flex; gap: 8px; margin-left: auto; }
+.blank {
+  margin: auto; max-width: 440px; padding: 32px; text-align: left;
+}
+.blank h1 { font-size: 26px; margin: 0 0 10px; letter-spacing: -0.01em; }
+.blank p { color: var(--muted); margin: 0 0 22px; font-size: 17px; }
+
+/* ---- Side panel ---- */
+.side { grid-area: side; border-left: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+.tabs { display: flex; gap: 4px; padding: 12px 16px 0; border-bottom: 1px solid var(--line); }
+.tab {
+  background: none; border: 0; cursor: pointer; padding: 10px 14px 12px;
+  font-weight: 700; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.tab[aria-selected="true"] { color: var(--paper); border-bottom-color: var(--cue); }
+.panel { flex: 1; overflow: auto; padding: 20px; }
+.panel[hidden] { display: none; }
+.lede { color: var(--muted); font-size: 14px; margin: 0 0 16px; }
+.tool-list { display: grid; gap: 8px; }
+.tool {
+  text-align: left; background: var(--raised); border: 1.5px solid transparent; border-radius: var(--radius);
+  padding: 12px 14px; cursor: pointer;
+}
+.tool:hover { border-color: var(--line); }
+.tool:disabled { opacity: .45; cursor: default; }
+.tool b { display: block; font-weight: 700; }
+.tool span { color: var(--muted); font-size: 13px; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 6px; }
+.opts label { font-size: 13px; color: var(--muted); display: grid; gap: 4px; }
+select.field { appearance: none; padding-right: 30px; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 16px) 55%, calc(100% - 11px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
+.result {
+  margin-top: 18px; background: var(--ink); border: 1.5px solid var(--line); border-radius: var(--radius);
+  padding: 14px 16px; white-space: pre-wrap; max-height: 46vh; overflow: auto; font-size: 16px; line-height: 1.6;
+}
+.result-head { display: flex; align-items: baseline; margin-top: 20px; }
+.result-head h3 { margin: 0; font-size: 15px; flex: 1; }
+.result-head span { color: var(--muted); font-size: 13px; }
+.hook { display: block; width: 100%; text-align: left; margin-top: 8px; background: var(--ink); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 12px 14px; cursor: pointer; }
+.hook:hover { border-color: var(--cue); }
+.working { display: flex; align-items: center; gap: 12px; margin-top: 18px; font-weight: 700; }
+.spinner { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid var(--line); border-top-color: var(--cue); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.warn { color: var(--tally); font-weight: 600; }
+.note { color: var(--muted); font-size: 13px; }
+
+/* ---- Live ---- */
+.status-line { display: flex; align-items: center; gap: 10px; font-weight: 700; margin-bottom: 14px; }
+.status-line .meter { display: flex; align-items: flex-end; gap: 2px; height: 16px; margin-left: 4px; }
+.preview {
+  position: relative; background: #000; border-radius: 14px; overflow: hidden;
+  aspect-ratio: 932 / 430; border: 1px solid var(--line);
+}
+.preview-scroll { position: absolute; inset: 0; overflow: hidden; padding: 0 9%; }
+.preview-text { font-weight: 600; line-height: 1.38; color: var(--paper); padding-bottom: 100%; }
+.preview-text .past { opacity: .38; }
+.preview-text .now { color: var(--cue); font-weight: 800; background: rgba(255, 194, 74, .16); border-radius: 3px; }
+.preview-text p { margin: 0 0 .9em; }
+.preview .cue-mark { position: absolute; left: 3%; width: 0; height: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 9px solid var(--cue); }
+.preview .mirrored { transform: scaleX(-1); }
+.preview-empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); padding: 24px; text-align: center; font-size: 14px; }
+.progress { height: 3px; background: var(--line); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--cue); width: 0; transition: width .3s; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 18px 0; }
+.stat b { display: block; font-size: 26px; font-weight: 800; line-height: 1.1; }
+.stat span { color: var(--muted); font-size: 13px; }
+.transport { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.transport .btn.primary, .transport .btn.live { min-height: 48px; padding: 0 26px; font-size: 17px; }
+.size-ctl { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.size-ctl output { min-width: 28px; text-align: center; font-weight: 700; }
+.take { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 18px; }
+.take h3 { margin: 0 0 4px; font-size: 20px; letter-spacing: -0.01em; }
+.take .sub { color: var(--muted); margin: 0 0 14px; }
+.take h4 { margin: 16px 0 6px; font-size: 14px; }
+.bar-row { display: grid; grid-template-columns: 90px 1fr 30px; gap: 10px; align-items: center; margin-bottom: 6px; font-weight: 700; }
+.bar-row i { display: block; height: 8px; background: var(--cue); border-radius: 4px; }
+.bar-row em { font-style: normal; text-align: right; }
+.quote { border-left: 2px solid var(--cue); padding-left: 12px; margin: 0 0 8px; color: var(--paper); }
+
+.banner {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+  background: var(--paper); color: var(--ink); font-weight: 700; padding: 12px 20px; border-radius: 999px;
+  display: flex; gap: 14px; align-items: center; z-index: 10; max-width: calc(100vw - 32px);
+}
+.banner button { background: none; border: 0; color: var(--ink); text-decoration: underline; font-weight: 800; cursor: pointer; }
+.gate { position: fixed; inset: 0; background: var(--ink); display: grid; place-items: center; z-index: 20; padding: 24px; }
+.gate div { max-width: 460px; }
+.gate h1 { font-size: 28px; margin: 0 0 12px; }
+.gate p { color: var(--muted); font-size: 17px; }
+
+/* ---- Small screens: one panel at a time ---- */
+.mobile-tabs { display: none; }
+@media (max-width: 1100px) {
+  .app { grid-template-columns: 240px minmax(0, 1fr) 360px; }
+}
+@media (max-width: 900px) {
+  .app {
+    grid-template-rows: 56px minmax(0, 1fr) 60px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "top" "main" "nav";
+  }
+  .library, .editor, .side { grid-area: main; border: 0; }
+  .app:not([data-view="lib"]) .library,
+  .app:not([data-view="edit"]) .editor,
+  .app:not([data-view="side"]) .side { display: none; }
+  .mobile-tabs { grid-area: nav; display: flex; border-top: 1px solid var(--line); background: var(--ink); }
+  .mobile-tabs button { flex: 1; background: none; border: 0; color: var(--muted); font-weight: 700; cursor: pointer; }
+  .mobile-tabs button[aria-selected="true"] { color: var(--paper); box-shadow: inset 0 2px 0 var(--cue); }
+  header.top { padding: 0 16px; gap: 10px; }
+  #presenceText, .send-long { display: none; }
+  .editor-inner { padding: 20px 16px 0; }
+  .editor-foot { padding: 10px 16px; }
+  .title-input { font-size: 24px; }
+  .script-input { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+<div class="app" data-view="edit" id="app">
+  <header class="top">
+    <div class="mark">Vompt<span>Studio</span></div>
+    <div class="presence" id="presence"><i class="dot" id="presenceDot"></i><span id="presenceText">Connecting to iPhone</span></div>
+    <div class="spacer"></div>
+    <button class="btn primary" id="sendBtn" disabled>Send<span class="send-long">&nbsp;to prompter</span></button>
+  </header>
+
+  <aside class="library" aria-label="Scripts">
+    <div class="library-head">
+      <h2>Scripts</h2>
+      <button class="btn small" id="newBtn">New script</button>
+    </div>
+    <div class="search"><label class="sr-only" for="search">Search scripts</label><input class="field" id="search" type="search" placeholder="Search scripts"></div>
+    <ul class="scripts" id="scripts"></ul>
+  </aside>
+
+  <main class="editor" id="editor">
+    <div class="blank" id="blank">
+      <h1>Pick a script, or start a new one</h1>
+      <p>Everything you write here saves straight to the iPhone. When it reads right, send it to the prompter and run the take from this page.</p>
+      <button class="btn primary" id="blankNew">New script</button>
+    </div>
+    <div class="editor-inner" id="editorInner" hidden>
+      <label class="sr-only" for="title">Title</label>
+      <input class="title-input" id="title" placeholder="Untitled script" autocomplete="off">
+      <label class="sr-only" for="script">Script</label>
+      <textarea class="script-input" id="script" placeholder="Write what you want to say, the way you'd say it. Or jot bullet points and use Draft from notes in Assist."></textarea>
+    </div>
+    <div class="editor-foot" id="editorFoot" hidden>
+      <span><b id="wordCount">0</b> words</span>
+      <span><b id="readTime">0:00</b> at 150 wpm</span>
+      <span id="saveState">Saved</span>
+      <div class="editor-actions">
+        <button class="btn quiet small" id="deleteBtn">Delete</button>
+      </div>
+    </div>
+  </main>
+
+  <section class="side" aria-label="Tools">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tabAssist" aria-selected="true" aria-controls="assist">Assist</button>
+      <button class="tab" role="tab" id="tabLive" aria-selected="false" aria-controls="live">Live</button>
+    </div>
+
+    <div class="panel" id="assist" role="tabpanel" aria-labelledby="tabAssist">
+      <p class="lede" id="aiStatus">Checking Apple Intelligence on the iPhone…</p>
+      <div class="tool-list" id="tools"></div>
+      <div class="opts" id="opts">
+        <label>Target length
+          <select class="field" id="seconds">
+            <option value="30">30 seconds</option>
+            <option value="60" selected>1 minute</option>
+            <option value="90">1 min 30 s</option>
+            <option value="120">2 minutes</option>
+            <option value="180">3 minutes</option>
+            <option value="300">5 minutes</option>
+          </select>
+        </label>
+        <label>Tone for drafts
+          <select class="field" id="tone">
+            <option>warm and confident</option>
+            <option>energetic and upbeat</option>
+            <option>calm and professional</option>
+            <option>casual and friendly</option>
+          </select>
+        </label>
+      </div>
+      <p class="note">Target length applies to Fit to a length and Draft from notes. Assist runs on the iPhone; nothing goes to a server.</p>
+      <div id="assistOut"></div>
+    </div>
+
+    <div class="panel" id="live" role="tabpanel" aria-labelledby="tabLive" hidden>
+      <div class="status-line"><i class="dot" id="tally"></i><span id="liveStatus">Prompter closed</span><span class="meter" id="liveMeter"></span></div>
+      <div class="preview" id="preview">
+        <div class="preview-scroll" id="previewScroll"><div class="preview-text" id="previewText"></div></div>
+        <div class="cue-mark" id="cueMark"></div>
+        <div class="preview-empty" id="previewEmpty">Choose a script and select Send to prompter. It opens on the iPhone, ready to read.</div>
+      </div>
+      <div class="progress"><i id="progress"></i></div>
+      <div class="stats">
+        <div class="stat"><b id="sTime">0:00</b><span>time</span></div>
+        <div class="stat"><b id="sWpm">–</b><span>words a minute</span></div>
+        <div class="stat"><b id="sFillers">0</b><span>fillers</span></div>
+      </div>
+      <div class="transport">
+        <button class="btn primary" id="playBtn" disabled>Start</button>
+        <button class="btn small" id="finishBtn" disabled>Finish take</button>
+        <button class="btn quiet small" id="resetBtn" disabled>Back to top</button>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn small" id="mirrorBtn" disabled>Mirror</button>
+        <div class="size-ctl">
+          <span class="note">Text size</span>
+          <button class="icon-btn" id="smallerBtn" aria-label="Smaller text" disabled>−</button>
+          <output id="sizeOut">32</output>
+          <button class="icon-btn" id="largerBtn" aria-label="Larger text" disabled>+</button>
+        </div>
+      </div>
+      <div class="row" style="margin-top:14px"><button class="btn quiet small" id="closeBtn" disabled>Close prompter on iPhone</button></div>
+      <div id="takeOut"></div>
+    </div>
+  </section>
+
+  <nav class="mobile-tabs" aria-label="Views">
+    <button data-view="lib" aria-selected="false">Scripts</button>
+    <button data-view="edit" aria-selected="true">Write</button>
+    <button data-view="side" aria-selected="false">Assist &amp; live</button>
+  </nav>
+</div>
+
+<div class="gate" id="gate" hidden><div><h1 id="gateTitle">Open the link from your iPhone</h1><p id="gateBody">On the iPhone, go to Scripts, tap Remote, and scan the code or type the link it shows. The link includes a key that keeps your scripts private on shared Wi-Fi.</p></div></div>
+<div class="banner" id="banner" hidden><span id="bannerText"></span><button id="bannerAction" hidden></button></div>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const store = {
+    get(k) { try { return sessionStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { sessionStorage.setItem(k, v); } catch {} },
+  };
+
+  const params = new URLSearchParams(location.search);
+  const KEY = (params.get("k") || store.get("vompt-key") || "").toUpperCase();
+  if (params.get("k")) store.set("vompt-key", KEY);
+
+  const TOOLS = [
+    ["speakable", "Make it sound spoken", "Plainer words and sentences that are easy to say"],
+    ["tighten", "Tighten", "Cut about a fifth without losing a point"],
+    ["fitTime", "Fit to a length", "Rewrite to run the target length"],
+    ["grammar", "Fix spelling and grammar", "Changes as little as possible"],
+    ["hooks", "Opening lines", "Three ways to grab attention in the first seconds"],
+    ["draft", "Draft from notes", "Turn the bullet points in the editor into a script"],
+  ];
+
+  const state = {
+    docs: [], current: null, dirty: false, saving: false, saveTimer: null,
+    live: null, liveDocId: null, liveWords: [], liveBreaks: [], renderedIndex: -2,
+    aiAvailable: false, aiBusy: false, connected: false, expired: false,
+  };
+
+  // ---------- API ----------
+  async function api(path, { method = "GET", body } = {}) {
+    const res = await fetch(path, {
+      method,
+      headers: { "X-Vompt-Key": KEY, ...(body ? { "content-type": "application/json" } : {}) },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    if (res.status === 401) { expire(); throw new Error("expired"); }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+    return data;
+  }
+  const control = (action, body) => api(`/api/control/${action}`, { method: "POST", body: body || {} }).catch(report);
+
+  function expire() {
+    if (state.expired) return;
+    state.expired = true;
+    $("gateTitle").textContent = KEY ? "This link has expired" : "Open the link from your iPhone";
+    if (KEY) $("gateBody").textContent = "The web remote was restarted on the iPhone. On the iPhone, tap Remote and scan the new code or type the new link.";
+    $("gate").hidden = false;
+  }
+
+  let bannerTimer;
+  function banner(text, action, onAction) {
+    $("bannerText").textContent = text;
+    const b = $("bannerAction");
+    b.hidden = !action;
+    if (action) { b.textContent = action; b.onclick = () => { $("banner").hidden = true; onAction(); }; }
+    $("banner").hidden = false;
+    clearTimeout(bannerTimer);
+    bannerTimer = setTimeout(() => { $("banner").hidden = true; }, action ? 7000 : 3200);
+  }
+  function report(e) { if (e && e.message !== "expired") banner(e.message || String(e)); }
+
+  // ---------- Helpers ----------
+  const words = (s) => (s.trim() ? s.trim().split(/\s+/).length : 0);
+  const clock = (sec) => { sec = Math.max(0, Math.round(sec)); return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`; };
+  const readTime = (n) => clock(n / 150 * 60);
+  function relDate(iso) {
+    const d = new Date(iso), mins = (Date.now() - d) / 60000;
+    if (mins < 1) return "just now";
+    if (mins < 60) return `${Math.round(mins)} min ago`;
+    if (mins < 1440) return `${Math.round(mins / 60)} h ago`;
+    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  }
+  const el = (tag, props = {}, ...kids) => {
+    const n = document.createElement(tag);
+    Object.assign(n, props);
+    for (const k of kids) n.append(k);
+    return n;
+  };
+
+  // ---------- Library ----------
+  async function loadDocs(selectId) {
+    try {
+      state.docs = await api("/api/documents");
+      state.docs.sort((a, b) => new Date(b.modifiedAt) - new Date(a.modifiedAt));
+      renderList();
+      if (selectId) openDoc(selectId);
+    } catch (e) { report(e); }
+  }
+
+  function renderList() {
+    const q = $("search").value.trim().toLowerCase();
+    const list = $("scripts");
+    list.replaceChildren();
+    const shown = state.docs.filter((d) => !q || d.title.toLowerCase().includes(q) || d.content.toLowerCase().includes(q));
+    if (!shown.length) {
+      list.append(el("li", { className: "empty-note", textContent: state.docs.length ? "No script matches." : "No scripts yet." }));
+      return;
+    }
+    for (const d of shown) {
+      const onAir = state.live && state.live.prompterOpen && state.live.documentId === d.id;
+      const meta = el("span", { className: "m" });
+      if (onAir) meta.append(el("span", { className: "on-air", textContent: "On the prompter " }));
+      meta.append(`${readTime(d.wordCount)} read, edited ${relDate(d.modifiedAt)}`);
+      const btn = el("button", { type: "button" }, el("span", { className: "t", textContent: d.title }), meta);
+      btn.setAttribute("aria-current", String(state.current && state.current.id === d.id));
+      btn.onclick = () => { openDoc(d.id); setView("edit"); };
+      list.append(el("li", {}, btn));
+    }
+  }
+
+  async function openDoc(id) {
+    if (state.current && state.current.id === id) return;
+    await flushSave();
+    const doc = state.docs.find((d) => d.id === id);
+    if (!doc) return;
+    state.current = { ...doc };
+    $("title").value = doc.title === "Untitled script" ? "" : doc.title;
+    $("script").value = doc.content;
+    $("blank").hidden = true;
+    $("editorInner").hidden = false;
+    $("editorFoot").hidden = false;
+    $("sendBtn").disabled = false;
+    updateCounts();
+    setSaveState("Saved");
+    renderList();
+    renderTools();
+  }
+
+  async function newDoc(content = "") {
+    try {
+      const doc = await api("/api/documents", { method: "POST", body: { title: "Untitled script", content } });
+      state.docs.unshift(doc);
+      state.current = null;
+      await openDoc(doc.id);
+      setView("edit");
+      $("title").focus();
+    } catch (e) { report(e); }
+  }
+
+  async function deleteDoc() {
+    const doc = state.current;
+    if (!doc || !confirm(`Delete "${doc.title}" from the iPhone? Its practice history goes too.`)) return;
+    try {
+      clearTimeout(state.saveTimer);
+      state.dirty = false;
+      await api(`/api/documents/${doc.id}`, { method: "DELETE" });
+      state.docs = state.docs.filter((d) => d.id !== doc.id);
+      state.current = null;
+      $("editorInner").hidden = true;
+      $("editorFoot").hidden = true;
+      $("blank").hidden = false;
+      $("sendBtn").disabled = true;
+      renderList();
+      renderTools();
+    } catch (e) { report(e); }
+  }
+
+  // ---------- Saving ----------
+  function setSaveState(t) { $("saveState").textContent = t; }
+  function updateCounts() {
+    const n = words($("script").value);
+    $("wordCount").textContent = n;
+    $("readTime").textContent = readTime(n);
+  }
+  function edited() {
+    if (!state.current) return;
+    state.dirty = true;
+    setSaveState("Edited");
+    updateCounts();
+    clearTimeout(state.saveTimer);
+    state.saveTimer = setTimeout(flushSave, 800);
+  }
+  async function flushSave() {
+    clearTimeout(state.saveTimer);
+    const doc = state.current;
+    if (!doc || !state.dirty) return;
+    if (state.saving) { state.saveTimer = setTimeout(flushSave, 300); return; }
+    state.saving = true;
+    state.dirty = false;
+    setSaveState("Saving");
+    const title = $("title").value.trim() || "Untitled script";
+    const content = $("script").value;
+    try {
+      const saved = await api(`/api/documents/${doc.id}/content`, { method: "POST", body: { title, content } });
+      const i = state.docs.findIndex((d) => d.id === doc.id);
+      if (i >= 0) state.docs[i] = saved;
+      if (state.current && state.current.id === doc.id) Object.assign(state.current, saved);
+      setSaveState(state.dirty ? "Edited" : "Saved");
+      renderList();
+    } catch (e) {
+      state.dirty = true;
+      setSaveState("Not saved");
+      report(e);
+    } finally {
+      state.saving = false;
+    }
+  }
+
+  // ---------- Assist ----------
+  function renderTools() {
+    const box = $("tools");
+    box.replaceChildren();
+    const hasText = !!(state.current && $("script").value.trim());
+    for (const [task, label, desc] of TOOLS) {
+      const b = el("button", { className: "tool", type: "button" }, el("b", { textContent: label }), el("span", { textContent: desc }));
+      b.disabled = !state.aiAvailable || state.aiBusy || !hasText;
+      b.onclick = () => runTool(task, label);
+      box.append(b);
+    }
+  }
+
+  async function checkAI() {
+    try {
+      const s = await api("/api/ai/status");
+      state.aiAvailable = !!s.available;
+      $("aiStatus").textContent = s.available
+        ? "Rewrite and draft with Apple Intelligence on the iPhone. Results show here before anything changes."
+        : (s.reason || "Apple Intelligence isn't available on this iPhone.");
+    } catch (e) {
+      $("aiStatus").textContent = "Couldn't reach the iPhone to check Apple Intelligence.";
+    }
+    renderTools();
+  }
+
+  async function runTool(task, label) {
+    if (!state.current) return;
+    await flushSave();
+    const text = $("script").value;
+    const out = $("assistOut");
+    state.aiBusy = true;
+    renderTools();
+    out.replaceChildren(el("div", { className: "working" }, el("i", { className: "spinner" }), `${label}…`));
+    try {
+      const res = await api("/api/ai/run", {
+        method: "POST",
+        body: { task, text, seconds: Number($("seconds").value), tone: $("tone").value },
+      });
+      showResult(task, label, res.text, text);
+    } catch (e) {
+      out.replaceChildren(el("p", { className: "warn", textContent: e.message === "expired" ? "" : e.message }));
+    } finally {
+      state.aiBusy = false;
+      renderTools();
+    }
+  }
+
+  function showResult(task, label, result, before) {
+    const out = $("assistOut");
+    out.replaceChildren();
+    if (task === "hooks") {
+      out.append(el("div", { className: "result-head" }, el("h3", { textContent: label }), el("span", { textContent: "Click one to put it at the top" })));
+      for (const line of result.split("\n").filter((l) => l.trim())) {
+        const b = el("button", { className: "hook", type: "button", textContent: line.trim() });
+        b.onclick = () => applyText(`${line.trim()}\n\n${$("script").value}`, before, "Opening line added");
+        out.append(b);
+      }
+      return;
+    }
+    out.append(
+      el("div", { className: "result-head" }, el("h3", { textContent: label }), el("span", { textContent: `${words(result)} words` })),
+      el("div", { className: "result", textContent: result }),
+    );
+    const use = el("button", { className: "btn primary small", type: "button", textContent: "Replace script" });
+    use.onclick = () => applyText(result, before, "Script replaced");
+    const copy = el("button", { className: "btn small", type: "button", textContent: "Copy" });
+    copy.onclick = () => navigator.clipboard.writeText(result).then(() => banner("Copied"), report);
+    const again = el("button", { className: "btn quiet small", type: "button", textContent: "Try again" });
+    again.onclick = () => runTool(task, label);
+    out.append(el("div", { className: "row", style: "margin-top:12px" }, use, copy, again));
+  }
+
+  function applyText(next, before, message) {
+    $("script").value = next;
+    edited();
+    $("assistOut").replaceChildren();
+    banner(message, "Undo", () => { $("script").value = before; edited(); });
+  }
+
+  // ---------- Live ----------
+  async function sendToPrompter() {
+    if (!state.current) return;
+    await flushSave();
+    await control("select-document", { documentId: state.current.id });
+    selectTab("live");
+    setView("side");
+    // If nothing opens, the phone probably isn't running the remote screen flow.
+    const id = state.current.id;
+    setTimeout(() => {
+      if (!(state.live && state.live.prompterOpen && state.live.documentId === id)) {
+        banner("The iPhone didn't open the prompter. Make sure Vompt is open on it, not in the background.");
+      }
+    }, 4000);
+  }
+
+  async function loadLiveDoc(id) {
+    state.liveDocId = id;
+    state.liveWords = [];
+    state.renderedIndex = -2;
+    if (!id) return renderPreviewText();
+    try {
+      const doc = await api(`/api/documents/${id}`);
+      if (state.liveDocId !== id) return;
+      state.liveWords = [];
+      state.liveBreaks = [];
+      const re = /\S+/g;
+      let m, last = 0;
+      while ((m = re.exec(doc.content))) {
+        const gap = doc.content.slice(last, m.index);
+        state.liveBreaks.push(state.liveWords.length ? (gap.match(/\n/g) || []).length : 0);
+        state.liveWords.push(m[0]);
+        last = m.index + m[0].length;
+      }
+      renderPreviewText();
+    } catch (e) { report(e); }
+  }
+
+  function renderPreviewText() {
+    const box = $("previewText");
+    box.replaceChildren();
+    let p = el("p");
+    state.liveWords.forEach((w, i) => {
+      if (state.liveBreaks[i] >= 2 && p.childNodes.length) { box.append(p); p = el("p"); }
+      else if (state.liveBreaks[i] === 1 && p.childNodes.length) p.append(el("br"));
+      else if (p.childNodes.length) p.append(" ");
+      p.append(el("span", { textContent: w }));
+    });
+    box.append(p);
+    state.renderedIndex = -2;
+  }
+
+  function paintPreview(s) {
+    const open = s.prompterOpen;
+    $("previewEmpty").hidden = open && state.liveWords.length > 0;
+    const prev = $("preview");
+    prev.style.aspectRatio = `${s.screenWidth || 932} / ${s.screenHeight || 430}`;
+    const scale = prev.clientWidth / (s.screenWidth || 932);
+    const fontPx = (s.fontSize || 32) * scale;
+    const text = $("previewText");
+    text.style.fontSize = `${fontPx}px`;
+    text.style.textAlign = "center";
+    text.parentElement.classList.toggle("mirrored", !!s.isMirrored);
+    const lineTop = prev.clientHeight * 0.32;
+    text.style.paddingTop = `${lineTop}px`;
+    $("cueMark").style.top = `${lineTop + fontPx * 0.69 - 6}px`;
+    $("cueMark").hidden = !open;
+
+    const idx = s.currentWordIndex;
+    if (idx !== state.renderedIndex) {
+      const spans = text.querySelectorAll("span");
+      spans.forEach((sp, i) => { sp.className = i < idx ? "past" : i === idx ? "now" : ""; });
+      state.renderedIndex = idx;
+      const target = spans[Math.max(0, idx)];
+      const scroller = $("previewScroll");
+      const top = idx < 0 || !target ? 0 : target.offsetTop - lineTop;
+      scroller.scrollTo({ top: Math.max(0, top), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    }
+  }
+
+  function paintLive(s) {
+    const open = !!s.prompterOpen;
+    const status = s.status || "idle";
+    const listening = open && status === "listening";
+    const hasTake = open && (status === "listening" || status === "paused");
+    $("tally").className = `dot${listening ? " live" : ""}`;
+    const label = !open ? "Prompter closed"
+      : s.modelProgress != null ? `Downloading voice model ${Math.round(s.modelProgress * 100)}%`
+      : status === "preparing" ? "Starting mic"
+      : listening ? "Listening"
+      : status === "paused" ? "Paused"
+      : status === "finished" ? "Take finished"
+      : "Ready";
+    $("liveStatus").textContent = open && s.title ? `${label}: ${s.title}` : label;
+
+    const play = $("playBtn");
+    play.disabled = !open || status === "preparing" || status === "finished";
+    play.textContent = listening ? "Pause" : hasTake ? "Resume" : "Start";
+    play.className = `btn ${listening ? "live" : "primary"}`;
+    $("finishBtn").disabled = !hasTake;
+    for (const id of ["resetBtn", "mirrorBtn", "smallerBtn", "largerBtn", "closeBtn"]) $(id).disabled = !open;
+    $("mirrorBtn").textContent = s.isMirrored ? "Mirrored" : "Mirror";
+    $("sizeOut").textContent = Math.round(s.fontSize || 32);
+    $("progress").style.width = `${Math.round((open ? s.progress || 0 : 0) * 100)}%`;
+    $("sTime").textContent = clock(s.elapsedSeconds || 0);
+    $("sWpm").textContent = s.wordsPerMinute > 0 ? Math.round(s.wordsPerMinute) : "–";
+    const fillers = Object.values(s.fillers || {}).reduce((a, b) => a + b, 0);
+    $("sFillers").textContent = fillers;
+    if (s.error && open) $("liveStatus").textContent = s.error;
+    paintTake(status === "finished" ? s.lastTake : null);
+    paintPreview(s);
+  }
+
+  let lastTakeKey = "";
+  function paintTake(t) {
+    const key = t ? JSON.stringify(t) : "";
+    if (key === lastTakeKey) return;
+    lastTakeKey = key;
+    const out = $("takeOut");
+    out.replaceChildren();
+    if (!t) return;
+    const fillers = Object.entries(t.fillers || {}).sort((a, b) => b[1] - a[1]);
+    const total = fillers.reduce((a, [, n]) => a + n, 0);
+    const pace = t.wordsPerMinute < 120 ? "On the slow side; most viewers like 130 to 165." : t.wordsPerMinute > 170 ? "Fast; try to land closer to 150." : "Comfortable pace.";
+    const box = el("div", { className: "take" },
+      el("h3", { textContent: `${clock(t.durationSeconds)} at ${Math.round(t.wordsPerMinute)} words a minute.` }),
+      el("p", { className: "sub", textContent: `${total ? `${total} ${total === 1 ? "filler" : "fillers"}` : "No fillers"}, ${Math.round(t.accuracy * 100)}% of words as written. ${pace}` }),
+    );
+    if (fillers.length) {
+      box.append(el("h4", { textContent: "Fillers" }));
+      const max = fillers[0][1];
+      for (const [w, n] of fillers) {
+        const bar = el("i"); bar.style.width = `${(n / max) * 100}%`;
+        box.append(el("div", { className: "bar-row" }, el("span", { textContent: `"${w}"` }), el("span", {}, bar), el("em", { textContent: n })));
+      }
+    }
+    if ((t.skipped || []).length) {
+      box.append(el("h4", { textContent: "Skipped" }));
+      for (const q of t.skipped) box.append(el("p", { className: "quote", textContent: q }));
+    }
+    if ((t.misreads || []).length) {
+      box.append(el("h4", { textContent: "Words that didn't match" }));
+      box.append(el("p", { className: "note", textContent: t.misreads.map((m) => `said "${m.said}" for "${m.expected}"`).join(", ") }));
+    }
+    box.append(el("p", { className: "note", textContent: `${t.repeats ? `${t.repeats} ${t.repeats === 1 ? "restart" : "restarts"}` : "No restarts"}, ${t.longPauses ? `${t.longPauses} long ${t.longPauses === 1 ? "pause" : "pauses"}` : "no long pauses"}.` }));
+    const again = el("button", { className: "btn primary small", type: "button", textContent: "Run it again" });
+    again.onclick = () => control("reset");
+    box.append(el("div", { className: "row", style: "margin-top:14px" }, again));
+    out.append(box);
+  }
+
+  // ---------- Presence and polling ----------
+  function setPresence(ok) {
+    state.connected = ok;
+    $("presenceDot").className = `dot${ok ? " ok" : ""}`;
+    $("presenceText").innerHTML = "";
+    $("presenceText").append(ok ? "iPhone connected" : "Reconnecting to iPhone");
+  }
+
+  async function heartbeat() {
+    if (state.expired) return;
+    try { await api("/api/client/heartbeat", { method: "POST" }); setPresence(true); }
+    catch (e) { if (e.message !== "expired") setPresence(false); }
+  }
+
+  let polling = false;
+  async function poll() {
+    if (polling || state.expired || document.hidden) return;
+    polling = true;
+    try {
+      const s = await api("/api/control/state");
+      setPresence(true);
+      const before = state.live;
+      state.live = s;
+      const docId = s.prompterOpen ? s.documentId : null;
+      if (docId !== state.liveDocId) await loadLiveDoc(docId);
+      if (!before || before.prompterOpen !== s.prompterOpen || before.documentId !== s.documentId) renderList();
+      paintLive(s);
+    } catch (e) {
+      if (e.message !== "expired") setPresence(false);
+    } finally {
+      polling = false;
+    }
+  }
+
+  // ---------- Views ----------
+  function selectTab(which) {
+    const live = which === "live";
+    $("tabAssist").setAttribute("aria-selected", String(!live));
+    $("tabLive").setAttribute("aria-selected", String(live));
+    $("assist").hidden = live;
+    $("live").hidden = !live;
+    if (live && state.live) paintLive(state.live);
+  }
+  function setView(view) {
+    $("app").dataset.view = view;
+    document.querySelectorAll(".mobile-tabs button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.view === view)));
+    if (view === "side" && state.live) paintLive(state.live);
+  }
+
+  // ---------- Wiring ----------
+  $("search").addEventListener("input", renderList);
+  $("newBtn").onclick = () => newDoc();
+  $("blankNew").onclick = () => newDoc();
+  $("deleteBtn").onclick = deleteDoc;
+  $("title").addEventListener("input", edited);
+  $("script").addEventListener("input", () => { edited(); renderTools(); });
+  $("sendBtn").onclick = sendToPrompter;
+  $("tabAssist").onclick = () => selectTab("assist");
+  $("tabLive").onclick = () => selectTab("live");
+  document.querySelectorAll(".mobile-tabs button").forEach((b) => { b.onclick = () => setView(b.dataset.view); });
+  $("playBtn").onclick = () => control(state.live && state.live.status === "listening" ? "pause" : "play");
+  $("finishBtn").onclick = () => control("finish");
+  $("resetBtn").onclick = () => control("reset");
+  $("mirrorBtn").onclick = () => control("mirror");
+  $("smallerBtn").onclick = () => control("fontsize", { action: "decrease" });
+  $("largerBtn").onclick = () => control("fontsize", { action: "increase" });
+  $("closeBtn").onclick = () => control("exit");
+  window.addEventListener("resize", () => { state.renderedIndex = -2; if (state.live) paintPreview(state.live); });
+
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); flushSave(); return; }
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+    if (!typing && e.code === "Space" && state.live && state.live.prompterOpen && !$("playBtn").disabled) {
+      e.preventDefault();
+      $("playBtn").click();
+    }
+  });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) { heartbeat(); poll(); } });
+  window.addEventListener("beforeunload", (e) => { if (state.dirty) { flushSave(); e.preventDefault(); } });
+
+  if (!KEY) { expire(); return; }
+  api("/api/client/connect", { method: "POST" }).then(() => setPresence(true), () => setPresence(false));
+  loadDocs().then(() => { if (state.docs[0] && innerWidth > 900) openDoc(state.docs[0].id); });
+  checkAI();
+  setInterval(heartbeat, 3000);
+  setInterval(poll, 400);
+  poll();
+})();
+</script>
+</body>
+</html>

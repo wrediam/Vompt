@@ -1,0 +1,198 @@
+{"t":1.0840859413146973,"type":"volatile","src":"b","words":[{"e":1.1000000000000001,"w":"Good"}],"text":"Good"}
+{"t":1.0842499732971191,"type":"volatile","src":"b","words":[{"e":1.1000000000000001,"w":"Good morning"}],"text":"Good morning"}
+{"t":2.0344439744949341,"type":"volatile","src":"b","words":[{"e":2.04,"w":"Good morning everyone"}],"text":"Good morning everyone"}
+{"t":2.0346019268035889,"type":"volatile","src":"b","words":[{"e":2.04,"w":"Good morning everyone,"}],"text":"Good morning everyone,"}
+{"t":2.0349858999252319,"type":"volatile","src":"b","words":[{"e":2.04,"w":"Good morning everyone, and"}],"text":"Good morning everyone, and"}
+{"t":2.0354059934616089,"type":"volatile","src":"b","words":[{"e":2.04,"w":"Good morning everyone, and thank"}],"text":"Good morning everyone, and thank"}
+{"t":2.9963489770889282,"type":"volatile","src":"b","words":[{"e":3,"w":"Good morning everyone, and thank you"}],"text":"Good morning everyone, and thank you"}
+{"t":2.9964649677276611,"type":"volatile","src":"b","words":[{"e":3,"w":"Good morning everyone, and thank you for"}],"text":"Good morning everyone, and thank you for"}
+{"t":2.9967039823532104,"type":"volatile","src":"b","words":[{"e":3,"w":"Good morning everyone, and thank you for join"}],"text":"Good morning everyone, and thank you for join"}
+{"t":2.9969849586486816,"type":"volatile","src":"b","words":[{"e":3,"w":"Good morning everyone, and thank you for joining"}],"text":"Good morning everyone, and thank you for joining"}
+{"t":2.9972819089889526,"type":"volatile","src":"b","words":[{"e":3,"w":"Good morning everyone, and thank you for joining us"}],"text":"Good morning everyone, and thank you for joining us"}
+{"t":3.9498409032821655,"type":"volatile","src":"b","words":[{"e":3.96,"w":"Good morning everyone, and thank you for joining us."}],"text":"Good morning everyone, and thank you for joining us."}
+{"t":4.0601149797439575,"type":"final","src":"b","words":[{"w":"Good","e":0.29999999999999999},{"w":" morning,","e":0.71999999999999997},{"w":" everyone,","e":1.26},{"w":" and","e":1.5600000000000001},{"w":" thank","e":1.74},{"w":" you","e":1.98},{"w":" for","e":2.1000000000000001},{"e":2.46,"w":" joining"},{"e":2.9399999999999999,"w":" us."}],"text":"Good morning, everyone, and thank you for joining us."}
+{"t":4.0602309703826904,"type":"volatile","src":"b","words":[{"e":4.0599999999999996,"w":" I"}],"text":" I"}
+{"t":4.0603269338607788,"type":"volatile","src":"b","words":[{"e":4.0599999999999996,"w":" I know"}],"text":" I know"}
+{"t":4.0604159832000732,"type":"volatile","src":"b","words":[{"e":4.0599999999999996,"w":" I know it"}],"text":" I know it"}
+{"t":4.0605219602584839,"type":"volatile","src":"b","words":[{"e":4.0599999999999996,"w":" I know it is"}],"text":" I know it is"}
+{"t":4.9132829904556274,"type":"volatile","src":"b","words":[{"w":" I know it is early","e":4.9199999999999999}],"text":" I know it is early"}
+{"t":4.9134058952331543,"type":"volatile","src":"b","words":[{"w":" I know it is early,","e":4.9199999999999999}],"text":" I know it is early,"}
+{"t":4.9138829708099365,"type":"volatile","src":"b","words":[{"w":" I know it is early, so","e":4.9199999999999999}],"text":" I know it is early, so"}
+{"t":4.9143009185791016,"type":"volatile","src":"b","words":[{"w":" I know it is early, so I","e":4.9199999999999999}],"text":" I know it is early, so I"}
+{"t":5.8728508949279785,"type":"volatile","src":"b","words":[{"w":" I know it is early, so I will","e":5.8799999999999999}],"text":" I know it is early, so I will"}
+{"t":5.8730859756469727,"type":"volatile","src":"b","words":[{"w":" I know it is early, so I will keep","e":5.8799999999999999}],"text":" I know it is early, so I will keep"}
+{"t":5.8734389543533325,"type":"volatile","src":"b","words":[{"w":" I know it is early, so I will keep this","e":5.8799999999999999}],"text":" I know it is early, so I will keep this"}
+{"t":5.8737199306488037,"type":"volatile","src":"b","words":[{"w":" I know it is early, so I will keep this short","e":5.8799999999999999}],"text":" I know it is early, so I will keep this short"}
+{"t":6.8348759412765503,"type":"volatile","src":"b","words":[{"w":" I know it is early, so I will keep this short.","e":6.8399999999999999}],"text":" I know it is early, so I will keep this short."}
+{"t":6.8832629919052124,"type":"final","src":"b","words":[{"w":" I","e":3.2400000000000002},{"w":" know","e":3.3599999999999999},{"w":" it","e":3.48},{"w":" is","e":3.6000000000000001},{"w":" early,","e":4.0800000000000001},{"e":4.3799999999999999,"w":" so"},{"e":4.6799999999999997,"w":" I"},{"w":" will","e":4.8600000000000003},{"w":" keep","e":5.04},{"w":" this","e":5.2199999999999998},{"w":" short.","e":5.8200000000000003}],"text":" I know it is early, so I will keep this short."}
+{"t":6.8835539817810059,"type":"volatile","src":"b","words":[{"w":" O","e":6.8799999999999999}],"text":" O"}
+{"t":6.8836789131164551,"type":"volatile","src":"b","words":[{"w":" Over","e":6.8799999999999999}],"text":" Over"}
+{"t":6.8837509155273438,"type":"volatile","src":"b","words":[{"w":" Over the","e":6.8799999999999999}],"text":" Over the"}
+{"t":6.8838139772415161,"type":"volatile","src":"b","words":[{"w":" Over the last","e":6.8799999999999999}],"text":" Over the last"}
+{"t":7.7939189672470093,"type":"volatile","src":"b","words":[{"e":7.7999999999999998,"w":" Over the last qu"}],"text":" Over the last qu"}
+{"t":7.7940618991851807,"type":"volatile","src":"b","words":[{"w":" Over the last quarter","e":7.7999999999999998}],"text":" Over the last quarter"}
+{"t":7.7943710088729858,"type":"volatile","src":"b","words":[{"e":7.7999999999999998,"w":" Over the last quarter our"}],"text":" Over the last quarter our"}
+{"t":7.7946529388427734,"type":"volatile","src":"b","words":[{"w":" Over the last quarter our team","e":7.7999999999999998}],"text":" Over the last quarter our team"}
+{"t":8.7563250064849854,"type":"volatile","src":"b","words":[{"e":8.7599999999999998,"w":" Over the last quarter our team sh"}],"text":" Over the last quarter our team sh"}
+{"t":8.7564330101013184,"type":"volatile","src":"b","words":[{"w":" Over the last quarter our team shipp","e":8.7599999999999998}],"text":" Over the last quarter our team shipp"}
+{"t":8.7564979791641235,"type":"volatile","src":"b","words":[{"w":" Over the last quarter our team shipped","e":8.7599999999999998}],"text":" Over the last quarter our team shipped"}
+{"t":8.7566080093383789,"type":"volatile","src":"b","words":[{"w":" Over the last quarter our team shipped 3","e":8.7599999999999998}],"text":" Over the last quarter our team shipped 3"}
+{"t":8.7570239305496216,"type":"volatile","src":"b","words":[{"w":" Over the last quarter our team shipped 3 major","e":8.7599999999999998}],"text":" Over the last quarter our team shipped 3 major"}
+{"t":9.7080539464950562,"type":"volatile","src":"b","words":[{"w":" Over the last quarter our team shipped 3 major features","e":9.7200000000000006}],"text":" Over the last quarter our team shipped 3 major features"}
+{"t":9.7081979513168335,"type":"volatile","src":"b","words":[{"w":" Over the last quarter our team shipped 3 major features.","e":9.7200000000000006}],"text":" Over the last quarter our team shipped 3 major features."}
+{"t":9.7524389028549194,"type":"final","src":"b","words":[{"e":6.2400000000000002,"w":" Over"},{"w":" the","e":6.4199999999999999},{"w":" last","e":6.54},{"w":" quarter,","e":7.1399999999999997},{"e":7.2000000000000002,"w":" our"},{"e":7.3799999999999999,"w":" team"},{"w":" shipped","e":7.8600000000000003},{"w":" 3","e":7.9800000000000004},{"w":" major","e":8.1600000000000001},{"w":" features.","e":8.9399999999999995}],"text":" Over the last quarter, our team shipped 3 major features."}
+{"t":9.7525579929351807,"type":"volatile","src":"b","words":[{"w":" First","e":9.7599999999999998}],"text":" First"}
+{"t":10.674662947654724,"type":"volatile","src":"b","words":[{"w":" First,","e":10.68}],"text":" First,"}
+{"t":10.674795985221863,"type":"volatile","src":"b","words":[{"w":" First, we","e":10.68}],"text":" First, we"}
+{"t":10.675182938575745,"type":"volatile","src":"b","words":[{"w":" First, we re","e":10.68}],"text":" First, we re"}
+{"t":10.675347924232483,"type":"volatile","src":"b","words":[{"w":" First, we reb","e":10.68}],"text":" First, we reb"}
+{"t":10.675549983978271,"type":"volatile","src":"b","words":[{"w":" First, we rebu","e":10.68}],"text":" First, we rebu"}
+{"t":10.67566990852356,"type":"volatile","src":"b","words":[{"w":" First, we rebuilt","e":10.68}],"text":" First, we rebuilt"}
+{"t":11.637812972068787,"type":"volatile","src":"b","words":[{"e":11.640000000000001,"w":" First, we rebuilt the"}],"text":" First, we rebuilt the"}
+{"t":11.637977957725525,"type":"volatile","src":"b","words":[{"e":11.640000000000001,"w":" First, we rebuilt the on"}],"text":" First, we rebuilt the on"}
+{"t":11.63805091381073,"type":"volatile","src":"b","words":[{"e":11.640000000000001,"w":" First, we rebuilt the onboard"}],"text":" First, we rebuilt the onboard"}
+{"t":11.638944983482361,"type":"volatile","src":"b","words":[{"e":11.640000000000001,"w":" First, we rebuilt the onboarding fl"}],"text":" First, we rebuilt the onboarding fl"}
+{"t":11.639081001281738,"type":"volatile","src":"b","words":[{"e":11.640000000000001,"w":" First, we rebuilt the onboarding flow"}],"text":" First, we rebuilt the onboarding flow"}
+{"t":12.596505999565125,"type":"volatile","src":"b","words":[{"e":12.6,"w":" First, we rebuilt the onboarding flow from"}],"text":" First, we rebuilt the onboarding flow from"}
+{"t":12.596640944480896,"type":"volatile","src":"b","words":[{"e":12.6,"w":" First, we rebuilt the onboarding flow from sc"}],"text":" First, we rebuilt the onboarding flow from sc"}
+{"t":12.596772909164429,"type":"volatile","src":"b","words":[{"e":12.6,"w":" First, we rebuilt the onboarding flow from scr"}],"text":" First, we rebuilt the onboarding flow from scr"}
+{"t":12.596840977668762,"type":"volatile","src":"b","words":[{"e":12.6,"w":" First, we rebuilt the onboarding flow from scratch"}],"text":" First, we rebuilt the onboarding flow from scratch"}
+{"t":13.554405927658081,"type":"volatile","src":"b","words":[{"e":13.56,"w":" First, we rebuilt the onboarding flow from scratch New"}],"text":" First, we rebuilt the onboarding flow from scratch New"}
+{"t":13.554529905319214,"type":"volatile","src":"b","words":[{"e":13.56,"w":" First, we rebuilt the onboarding flow from scratch New us"}],"text":" First, we rebuilt the onboarding flow from scratch New us"}
+{"t":13.554870963096619,"type":"volatile","src":"b","words":[{"e":13.56,"w":" First, we rebuilt the onboarding flow from scratch New users"}],"text":" First, we rebuilt the onboarding flow from scratch New users"}
+{"t":13.555148959159851,"type":"volatile","src":"b","words":[{"e":13.56,"w":" First, we rebuilt the onboarding flow from scratch New users Nor"}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor"}
+{"t":14.516672968864441,"type":"volatile","src":"b","words":[{"e":14.52,"w":" First, we rebuilt the onboarding flow from scratch New users Nor reach"}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor reach"}
+{"t":14.516867995262146,"type":"volatile","src":"b","words":[{"e":14.52,"w":" First, we rebuilt the onboarding flow from scratch New users Nor reach their"}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor reach their"}
+{"t":14.517005920410156,"type":"volatile","src":"b","words":[{"e":14.52,"w":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1"}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1"}
+{"t":14.517160892486572,"type":"volatile","src":"b","words":[{"e":14.52,"w":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st"}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st"}
+{"t":14.517247915267944,"type":"volatile","src":"b","words":[{"e":14.52,"w":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success"}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success"}
+{"t":15.477115988731384,"type":"volatile","src":"b","words":[{"e":15.48,"w":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success in"}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success in"}
+{"t":15.477256894111633,"type":"volatile","src":"b","words":[{"e":15.48,"w":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success in under"}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success in under"}
+{"t":15.477535009384155,"type":"volatile","src":"b","words":[{"e":15.48,"w":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success in under 2"}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success in under 2"}
+{"t":15.477695941925049,"type":"volatile","src":"b","words":[{"e":15.48,"w":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success in under 2 minutes"}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success in under 2 minutes"}
+{"t":16.43724000453949,"type":"volatile","src":"b","words":[{"e":16.440000000000001,"w":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success in under 2 minutes."}],"text":" First, we rebuilt the onboarding flow from scratch New users Nor reach their 1st success in under 2 minutes."}
+{"t":16.560793995857239,"type":"final","src":"b","words":[{"w":" First,","e":9.7200000000000006},{"w":" we","e":9.9600000000000009},{"w":" rebuilt","e":10.44},{"w":" the","e":10.619999999999999},{"w":" onboarding","e":11.1},{"w":" flow","e":11.4},{"w":" from","e":11.58},{"e":12,"w":" scratch,"},{"e":12.66,"w":" new"},{"w":" users","e":12.960000000000001},{"w":" Nor","e":13.199999999999999},{"w":" reach","e":13.56},{"w":" their","e":13.74},{"e":13.98,"w":" 1st"},{"e":14.1,"w":" success"},{"w":" in","e":14.52},{"w":" under","e":14.640000000000001},{"w":" 2","e":14.82},{"e":15.42,"w":" minutes."}],"text":" First, we rebuilt the onboarding flow from scratch, new users Nor reach their 1st success in under 2 minutes."}
+{"t":16.56092095375061,"type":"volatile","src":"b","words":[{"e":16.559999999999999,"w":" These"}],"text":" These"}
+{"t":17.391044974327087,"type":"volatile","src":"b","words":[{"e":17.399999999999999,"w":" These changes"}],"text":" These changes"}
+{"t":17.391704916954041,"type":"volatile","src":"b","words":[{"e":17.399999999999999,"w":" These changes had"}],"text":" These changes had"}
+{"t":17.391892910003662,"type":"volatile","src":"b","words":[{"e":17.399999999999999,"w":" These changes had a"}],"text":" These changes had a"}
+{"t":17.392039895057678,"type":"volatile","src":"b","words":[{"e":17.399999999999999,"w":" These changes had a real"}],"text":" These changes had a real"}
+{"t":17.392480969429016,"type":"volatile","src":"b","words":[{"e":17.399999999999999,"w":" These changes had a real imp"}],"text":" These changes had a real imp"}
+{"t":17.392639994621277,"type":"volatile","src":"b","words":[{"e":17.399999999999999,"w":" These changes had a real impact"}],"text":" These changes had a real impact"}
+{"t":18.357290983200073,"type":"volatile","src":"b","words":[{"e":18.359999999999999,"w":" These changes had a real impact on"}],"text":" These changes had a real impact on"}
+{"t":18.357424974441528,"type":"volatile","src":"b","words":[{"e":18.359999999999999,"w":" These changes had a real impact on our"}],"text":" These changes had a real impact on our"}
+{"t":18.357625961303711,"type":"volatile","src":"b","words":[{"e":18.359999999999999,"w":" These changes had a real impact on our numbers"}],"text":" These changes had a real impact on our numbers"}
+{"t":18.357932925224304,"type":"volatile","src":"b","words":[{"e":18.359999999999999,"w":" These changes had a real impact on our numbers."}],"text":" These changes had a real impact on our numbers."}
+{"t":19.345512986183167,"type":"final","src":"b","words":[{"w":" These","e":15.9},{"w":" changes","e":16.379999999999999},{"w":" had","e":16.620000000000001},{"w":" a","e":16.739999999999998},{"w":" real","e":16.800000000000001},{"w":" impact","e":17.100000000000001},{"w":" on","e":17.34},{"e":17.460000000000001,"w":" our"},{"e":17.760000000000002,"w":" numbers."}],"text":" These changes had a real impact on our numbers."}
+{"t":20.277682900428772,"type":"volatile","src":"b","words":[{"e":20.280000000000001,"w":" Actually"}],"text":" Actually"}
+{"t":20.277884960174561,"type":"volatile","src":"b","words":[{"e":20.280000000000001,"w":" Actually,"}],"text":" Actually,"}
+{"t":21.237446904182434,"type":"volatile","src":"b","words":[{"e":21.239999999999998,"w":" Actually, let"}],"text":" Actually, let"}
+{"t":21.237571954727173,"type":"volatile","src":"b","words":[{"e":21.239999999999998,"w":" Actually, let me"}],"text":" Actually, let me"}
+{"t":21.237671971321106,"type":"volatile","src":"b","words":[{"e":21.239999999999998,"w":" Actually, let me back"}],"text":" Actually, let me back"}
+{"t":21.238070011138916,"type":"volatile","src":"b","words":[{"e":21.239999999999998,"w":" Actually, let me back up"}],"text":" Actually, let me back up"}
+{"t":22.194134950637817,"type":"volatile","src":"b","words":[{"e":22.199999999999999,"w":" Actually, let me back up."}],"text":" Actually, let me back up."}
+{"t":22.225290894508362,"type":"final","src":"b","words":[{"w":" Actually,","e":19.739999999999998},{"w":" let","e":20.219999999999999},{"w":" me","e":20.34},{"w":" back","e":20.399999999999999},{"w":" up.","e":21.18}],"text":" Actually, let me back up."}
+{"t":22.225416898727417,"type":"volatile","src":"b","words":[{"e":22.239999999999998,"w":" Sec"}],"text":" Sec"}
+{"t":22.225475907325745,"type":"volatile","src":"b","words":[{"e":22.239999999999998,"w":" Second"}],"text":" Second"}
+{"t":22.225540995597839,"type":"volatile","src":"b","words":[{"e":22.239999999999998,"w":" Second, we"}],"text":" Second, we"}
+{"t":22.225596904754639,"type":"volatile","src":"b","words":[{"e":22.239999999999998,"w":" Second, we la"}],"text":" Second, we la"}
+{"t":23.156870007514954,"type":"volatile","src":"b","words":[{"e":23.16,"w":" Second, we laun"}],"text":" Second, we laun"}
+{"t":23.157099962234497,"type":"volatile","src":"b","words":[{"e":23.16,"w":" Second, we launched off"}],"text":" Second, we launched off"}
+{"t":23.157488942146301,"type":"volatile","src":"b","words":[{"e":23.16,"w":" Second, we launched offline"}],"text":" Second, we launched offline"}
+{"t":23.157702922821045,"type":"volatile","src":"b","words":[{"e":23.16,"w":" Second, we launched offline mode"}],"text":" Second, we launched offline mode"}
+{"t":24.110907912254333,"type":"volatile","src":"b","words":[{"e":24.120000000000001,"w":" Second, we launched offline mode,"}],"text":" Second, we launched offline mode,"}
+{"t":24.111377954483032,"type":"volatile","src":"b","words":[{"e":24.120000000000001,"w":" Second, we launched offline mode, which"}],"text":" Second, we launched offline mode, which"}
+{"t":24.111594915390015,"type":"volatile","src":"b","words":[{"e":24.120000000000001,"w":" Second, we launched offline mode, which was"}],"text":" Second, we launched offline mode, which was"}
+{"t":24.111843943595886,"type":"volatile","src":"b","words":[{"e":24.120000000000001,"w":" Second, we launched offline mode, which was the"}],"text":" Second, we launched offline mode, which was the"}
+{"t":24.112019896507263,"type":"volatile","src":"b","words":[{"e":24.120000000000001,"w":" Second, we launched offline mode, which was the most"}],"text":" Second, we launched offline mode, which was the most"}
+{"t":25.077683925628662,"type":"volatile","src":"b","words":[{"e":25.079999999999998,"w":" Second, we launched offline mode, which was the most request"}],"text":" Second, we launched offline mode, which was the most request"}
+{"t":25.077813982963562,"type":"volatile","src":"b","words":[{"e":25.079999999999998,"w":" Second, we launched offline mode, which was the most requested"}],"text":" Second, we launched offline mode, which was the most requested"}
+{"t":26.034860968589783,"type":"volatile","src":"b","words":[{"e":26.039999999999999,"w":" Second, we launched offline mode, which was the most requested feature"}],"text":" Second, we launched offline mode, which was the most requested feature"}
+{"t":26.035008907318115,"type":"volatile","src":"b","words":[{"e":26.039999999999999,"w":" Second, we launched offline mode, which was the most requested feature in"}],"text":" Second, we launched offline mode, which was the most requested feature in"}
+{"t":26.035254955291748,"type":"volatile","src":"b","words":[{"e":26.039999999999999,"w":" Second, we launched offline mode, which was the most requested feature in our"}],"text":" Second, we launched offline mode, which was the most requested feature in our"}
+{"t":26.035431981086731,"type":"volatile","src":"b","words":[{"e":26.039999999999999,"w":" Second, we launched offline mode, which was the most requested feature in our surv"}],"text":" Second, we launched offline mode, which was the most requested feature in our surv"}
+{"t":26.035598993301392,"type":"volatile","src":"b","words":[{"e":26.039999999999999,"w":" Second, we launched offline mode, which was the most requested feature in our survey"}],"text":" Second, we launched offline mode, which was the most requested feature in our survey"}
+{"t":26.997219920158386,"type":"volatile","src":"b","words":[{"e":27,"w":" Second, we launched offline mode, which was the most requested feature in our survey."}],"text":" Second, we launched offline mode, which was the most requested feature in our survey."}
+{"t":27.075911998748779,"type":"final","src":"b","words":[{"w":" Second,","e":21.539999999999999},{"w":" we","e":21.780000000000001},{"w":" launched","e":22.260000000000002},{"w":" offline","e":22.620000000000001},{"w":" mode,","e":23.100000000000001},{"w":" which","e":23.399999999999999},{"w":" was","e":23.579999999999998},{"e":23.760000000000002,"w":" the"},{"e":23.879999999999999,"w":" most"},{"w":" requested","e":24.539999999999999},{"w":" feature","e":25.02},{"w":" in","e":25.140000000000001},{"w":" our","e":25.199999999999999},{"e":25.98,"w":" survey."}],"text":" Second, we launched offline mode, which was the most requested feature in our survey."}
+{"t":27.076035976409912,"type":"volatile","src":"b","words":[{"e":27.079999999999998,"w":" Th"}],"text":" Th"}
+{"t":27.076112985610962,"type":"volatile","src":"b","words":[{"e":27.079999999999998,"w":" Third"}],"text":" Third"}
+{"t":27.076178908348083,"type":"volatile","src":"b","words":[{"e":27.079999999999998,"w":" Third,"}],"text":" Third,"}
+{"t":27.957757949829102,"type":"volatile","src":"b","words":[{"e":27.960000000000001,"w":" Third, we"}],"text":" Third, we"}
+{"t":27.95789897441864,"type":"volatile","src":"b","words":[{"e":27.960000000000001,"w":" Third, we cut"}],"text":" Third, we cut"}
+{"t":27.957953929901123,"type":"volatile","src":"b","words":[{"e":27.960000000000001,"w":" Third, we cut the"}],"text":" Third, we cut the"}
+{"t":27.958125948905945,"type":"volatile","src":"b","words":[{"e":27.960000000000001,"w":" Third, we cut the average"}],"text":" Third, we cut the average"}
+{"t":28.913336992263794,"type":"volatile","src":"b","words":[{"e":28.920000000000002,"w":" Third, we cut the average page"}],"text":" Third, we cut the average page"}
+{"t":28.913578987121582,"type":"volatile","src":"b","words":[{"e":28.920000000000002,"w":" Third, we cut the average page load"}],"text":" Third, we cut the average page load"}
+{"t":28.913967967033386,"type":"volatile","src":"b","words":[{"e":28.920000000000002,"w":" Third, we cut the average page load time"}],"text":" Third, we cut the average page load time"}
+{"t":28.914247989654541,"type":"volatile","src":"b","words":[{"e":28.920000000000002,"w":" Third, we cut the average page load time in"}],"text":" Third, we cut the average page load time in"}
+{"t":29.873385906219482,"type":"volatile","src":"b","words":[{"e":29.879999999999999,"w":" Third, we cut the average page load time in half"}],"text":" Third, we cut the average page load time in half"}
+{"t":29.873497009277344,"type":"volatile","src":"b","words":[{"e":29.879999999999999,"w":" Third, we cut the average page load time in half."}],"text":" Third, we cut the average page load time in half."}
+{"t":29.907418966293335,"type":"final","src":"b","words":[{"w":" Third,","e":26.52},{"w":" we","e":26.940000000000001},{"w":" cut","e":27.120000000000001},{"w":" the","e":27.239999999999998},{"w":" average","e":27.359999999999999},{"w":" page","e":27.899999999999999},{"w":" load","e":28.140000000000001},{"e":28.379999999999999,"w":" time"},{"e":28.559999999999999,"w":" in"},{"w":" half.","e":28.98}],"text":" Third, we cut the average page load time in half."}
+{"t":29.907541990280151,"type":"volatile","src":"b","words":[{"e":29.920000000000002,"w":" Um"}],"text":" Um"}
+{"t":30.834023952484131,"type":"volatile","src":"b","words":[{"e":30.84,"w":" Um looking"}],"text":" Um looking"}
+{"t":30.834499001502991,"type":"volatile","src":"b","words":[{"e":30.84,"w":" Um looking ahead"}],"text":" Um looking ahead"}
+{"t":31.796189904212952,"type":"volatile","src":"b","words":[{"e":31.800000000000001,"w":" Um looking ahead,"}],"text":" Um looking ahead,"}
+{"t":31.796332001686096,"type":"volatile","src":"b","words":[{"e":31.800000000000001,"w":" Um looking ahead, we"}],"text":" Um looking ahead, we"}
+{"t":31.796494007110596,"type":"volatile","src":"b","words":[{"e":31.800000000000001,"w":" Um looking ahead, we will"}],"text":" Um looking ahead, we will"}
+{"t":31.796698927879333,"type":"volatile","src":"b","words":[{"e":31.800000000000001,"w":" Um looking ahead, we will focus"}],"text":" Um looking ahead, we will focus"}
+{"t":31.797043919563293,"type":"volatile","src":"b","words":[{"e":31.800000000000001,"w":" Um looking ahead, we will focus on"}],"text":" Um looking ahead, we will focus on"}
+{"t":32.75561797618866,"type":"volatile","src":"b","words":[{"e":32.759999999999998,"w":" Um looking ahead, we will focus on coll"}],"text":" Um looking ahead, we will focus on coll"}
+{"t":32.755742907524109,"type":"volatile","src":"b","words":[{"e":32.759999999999998,"w":" Um looking ahead, we will focus on collab"}],"text":" Um looking ahead, we will focus on collab"}
+{"t":32.755844950675964,"type":"volatile","src":"b","words":[{"e":32.759999999999998,"w":" Um looking ahead, we will focus on collabor"}],"text":" Um looking ahead, we will focus on collabor"}
+{"t":32.755952000617981,"type":"volatile","src":"b","words":[{"e":32.759999999999998,"w":" Um looking ahead, we will focus on collaboration"}],"text":" Um looking ahead, we will focus on collaboration"}
+{"t":33.717248916625977,"type":"volatile","src":"b","words":[{"e":33.719999999999999,"w":" Um looking ahead, we will focus on collaboration features"}],"text":" Um looking ahead, we will focus on collaboration features"}
+{"t":33.717363953590393,"type":"volatile","src":"b","words":[{"e":33.719999999999999,"w":" Um looking ahead, we will focus on collaboration features."}],"text":" Um looking ahead, we will focus on collaboration features."}
+{"t":33.758072972297668,"type":"final","src":"b","words":[{"w":" Um,","e":29.82},{"w":" looking","e":30},{"w":" ahead,","e":30.780000000000001},{"w":" we","e":30.899999999999999},{"w":" will","e":31.02},{"w":" focus","e":31.140000000000001},{"w":" on","e":31.440000000000001},{"e":32.159999999999997,"w":" collaboration"},{"e":32.880000000000003,"w":" features."}],"text":" Um, looking ahead, we will focus on collaboration features."}
+{"t":33.758257985115051,"type":"volatile","src":"b","words":[{"e":33.759999999999998,"w":" Te"}],"text":" Te"}
+{"t":33.758359909057617,"type":"volatile","src":"b","words":[{"e":33.759999999999998,"w":" Teams"}],"text":" Teams"}
+{"t":34.673407912254333,"type":"volatile","src":"b","words":[{"e":34.68,"w":" Teams have"}],"text":" Teams have"}
+{"t":34.673533916473389,"type":"volatile","src":"b","words":[{"e":34.68,"w":" Teams have told"}],"text":" Teams have told"}
+{"t":34.673617005348206,"type":"volatile","src":"b","words":[{"e":34.68,"w":" Teams have told us"}],"text":" Teams have told us"}
+{"t":34.673974990844727,"type":"volatile","src":"b","words":[{"e":34.68,"w":" Teams have told us they"}],"text":" Teams have told us they"}
+{"t":35.633669972419739,"type":"volatile","src":"b","words":[{"e":35.640000000000001,"w":" Teams have told us they want"}],"text":" Teams have told us they want"}
+{"t":35.633855938911438,"type":"volatile","src":"b","words":[{"e":35.640000000000001,"w":" Teams have told us they want to"}],"text":" Teams have told us they want to"}
+{"t":35.633932948112488,"type":"volatile","src":"b","words":[{"e":35.640000000000001,"w":" Teams have told us they want to."}],"text":" Teams have told us they want to."}
+{"t":35.659734964370728,"type":"final","src":"b","words":[{"w":" Teams","e":33.420000000000002},{"w":" have","e":33.719999999999999},{"w":" told","e":33.840000000000003},{"w":" us","e":34.020000000000003},{"w":" they","e":34.259999999999998},{"w":" want","e":34.619999999999997},{"w":" to.","e":34.799999999999997}],"text":" Teams have told us they want to."}
+{"t":35.659863948822021,"type":"volatile","src":"b","words":[{"e":35.659999999999997,"w":" Ah"}],"text":" Ah"}
+{"t":36.596107959747314,"type":"volatile","src":"b","words":[{"e":36.600000000000001,"w":" Ah,"}],"text":" Ah,"}
+{"t":36.596229910850525,"type":"volatile","src":"b","words":[{"e":36.600000000000001,"w":" Ah, share"}],"text":" Ah, share"}
+{"t":36.596679925918579,"type":"volatile","src":"b","words":[{"e":36.600000000000001,"w":" Ah, share project"}],"text":" Ah, share project"}
+{"t":37.553582906723022,"type":"volatile","src":"b","words":[{"e":37.560000000000002,"w":" Ah, share projects"}],"text":" Ah, share projects"}
+{"t":37.553733944892883,"type":"volatile","src":"b","words":[{"e":37.560000000000002,"w":" Ah, share projects and"}],"text":" Ah, share projects and"}
+{"t":37.55393397808075,"type":"volatile","src":"b","words":[{"e":37.560000000000002,"w":" Ah, share projects and leave"}],"text":" Ah, share projects and leave"}
+{"t":37.554301977157593,"type":"volatile","src":"b","words":[{"e":37.560000000000002,"w":" Ah, share projects and leave com"}],"text":" Ah, share projects and leave com"}
+{"t":37.554517984390259,"type":"volatile","src":"b","words":[{"e":37.560000000000002,"w":" Ah, share projects and leave comments"}],"text":" Ah, share projects and leave comments"}
+{"t":38.513804912567139,"type":"volatile","src":"b","words":[{"e":38.520000000000003,"w":" Ah, share projects and leave comments in"}],"text":" Ah, share projects and leave comments in"}
+{"t":38.513927936553955,"type":"volatile","src":"b","words":[{"e":38.520000000000003,"w":" Ah, share projects and leave comments in real"}],"text":" Ah, share projects and leave comments in real"}
+{"t":38.514060974121094,"type":"volatile","src":"b","words":[{"e":38.520000000000003,"w":" Ah, share projects and leave comments in real time"}],"text":" Ah, share projects and leave comments in real time"}
+{"t":38.514163970947266,"type":"volatile","src":"b","words":[{"e":38.520000000000003,"w":" Ah, share projects and leave comments in real time."}],"text":" Ah, share projects and leave comments in real time."}
+{"t":38.556139945983887,"type":"final","src":"b","words":[{"w":" Ah,","e":35.759999999999998},{"w":" share","e":35.939999999999998},{"w":" projects","e":36.539999999999999},{"w":" and","e":36.719999999999999},{"w":" leave","e":36.840000000000003},{"w":" comments","e":37.259999999999998},{"w":" in","e":37.5},{"e":37.619999999999997,"w":" real"},{"e":37.859999999999999,"w":" time."}],"text":" Ah, share projects and leave comments in real time."}
+{"t":39.472836971282959,"type":"volatile","src":"b","words":[{"e":39.479999999999997,"w":" We"}],"text":" We"}
+{"t":39.473130941390991,"type":"volatile","src":"b","words":[{"e":39.479999999999997,"w":" We plan"}],"text":" We plan"}
+{"t":39.473315000534058,"type":"volatile","src":"b","words":[{"e":39.479999999999997,"w":" We plan to"}],"text":" We plan to"}
+{"t":39.473760008811951,"type":"volatile","src":"b","words":[{"e":39.479999999999997,"w":" We plan to del"}],"text":" We plan to del"}
+{"t":40.436017990112305,"type":"volatile","src":"b","words":[{"e":40.439999999999998,"w":" We plan to deliver"}],"text":" We plan to deliver"}
+{"t":40.436141967773438,"type":"volatile","src":"b","words":[{"e":40.439999999999998,"w":" We plan to deliver a"}],"text":" We plan to deliver a"}
+{"t":40.436201930046082,"type":"volatile","src":"b","words":[{"e":40.439999999999998,"w":" We plan to deliver a 1"}],"text":" We plan to deliver a 1"}
+{"t":40.436560988426208,"type":"volatile","src":"b","words":[{"e":40.439999999999998,"w":" We plan to deliver a 1st"}],"text":" We plan to deliver a 1st"}
+{"t":40.436723947525024,"type":"volatile","src":"b","words":[{"e":40.439999999999998,"w":" We plan to deliver a 1st version"}],"text":" We plan to deliver a 1st version"}
+{"t":41.394094944000244,"type":"volatile","src":"b","words":[{"e":41.399999999999999,"w":" We plan to deliver a 1st version by"}],"text":" We plan to deliver a 1st version by"}
+{"t":41.394228935241699,"type":"volatile","src":"b","words":[{"e":41.399999999999999,"w":" We plan to deliver a 1st version by the"}],"text":" We plan to deliver a 1st version by the"}
+{"t":41.394339919090271,"type":"volatile","src":"b","words":[{"e":41.399999999999999,"w":" We plan to deliver a 1st version by the end"}],"text":" We plan to deliver a 1st version by the end"}
+{"t":41.394436955451965,"type":"volatile","src":"b","words":[{"e":41.399999999999999,"w":" We plan to deliver a 1st version by the end of"}],"text":" We plan to deliver a 1st version by the end of"}
+{"t":41.394783973693848,"type":"volatile","src":"b","words":[{"e":41.399999999999999,"w":" We plan to deliver a 1st version by the end of March"}],"text":" We plan to deliver a 1st version by the end of March"}
+{"t":42.353827953338623,"type":"volatile","src":"b","words":[{"e":42.359999999999999,"w":" We plan to deliver a 1st version by the end of March."}],"text":" We plan to deliver a 1st version by the end of March."}
+{"t":42.392544984817505,"type":"final","src":"b","words":[{"w":" We","e":38.700000000000003},{"w":" plan","e":38.880000000000003},{"w":" to","e":39.119999999999997},{"w":" deliver","e":39.479999999999997},{"w":" a","e":39.600000000000001},{"w":" 1st","e":39.899999999999999},{"w":" version","e":40.020000000000003},{"e":40.439999999999998,"w":" by"},{"e":40.560000000000002,"w":" the"},{"w":" end","e":40.619999999999997},{"w":" of","e":40.740000000000002},{"w":" March.","e":41.399999999999999}],"text":" We plan to deliver a 1st version by the end of March."}
+{"t":42.39266300201416,"type":"volatile","src":"b","words":[{"e":42.399999999999999,"w":" Thank"}],"text":" Thank"}
+{"t":42.392704963684082,"type":"volatile","src":"b","words":[{"e":42.399999999999999,"w":" Thank you"}],"text":" Thank you"}
+{"t":43.317398905754089,"type":"volatile","src":"b","words":[{"e":43.32,"w":" Thank you,"}],"text":" Thank you,"}
+{"t":43.317528963088989,"type":"volatile","src":"b","words":[{"e":43.32,"w":" Thank you, and"}],"text":" Thank you, and"}
+{"t":43.317739009857178,"type":"volatile","src":"b","words":[{"e":43.32,"w":" Thank you, and I"}],"text":" Thank you, and I"}
+{"t":43.317897915840149,"type":"volatile","src":"b","words":[{"e":43.32,"w":" Thank you, and I am"}],"text":" Thank you, and I am"}
+{"t":43.318238973617554,"type":"volatile","src":"b","words":[{"e":43.32,"w":" Thank you, and I am happy"}],"text":" Thank you, and I am happy"}
+{"t":44.27701199054718,"type":"volatile","src":"b","words":[{"e":44.280000000000001,"w":" Thank you, and I am happy to"}],"text":" Thank you, and I am happy to"}
+{"t":44.27722692489624,"type":"volatile","src":"b","words":[{"e":44.280000000000001,"w":" Thank you, and I am happy to take"}],"text":" Thank you, and I am happy to take"}
+{"t":44.277514934539795,"type":"volatile","src":"b","words":[{"e":44.280000000000001,"w":" Thank you, and I am happy to take your"}],"text":" Thank you, and I am happy to take your"}
+{"t":44.782696962356567,"type":"volatile","src":"b","words":[{"e":44.766562499999999,"w":" Thank you, and I am happy to take your questions"}],"text":" Thank you, and I am happy to take your questions"}
+{"t":44.7828289270401,"type":"volatile","src":"b","words":[{"e":44.766562499999999,"w":" Thank you, and I am happy to take your questions."}],"text":" Thank you, and I am happy to take your questions."}
+{"t":44.818761944770813,"type":"final","src":"b","words":[{"w":" Thank","e":41.700000000000003},{"w":" you,","e":42.359999999999999},{"w":" and","e":42.600000000000001},{"w":" I","e":42.780000000000001},{"w":" am","e":42.899999999999999},{"w":" happy","e":43.079999999999998},{"w":" to","e":43.380000000000003},{"e":43.560000000000002,"w":" take"},{"e":43.740000000000002,"w":" your"},{"w":" questions.","e":44.340000000000003}],"text":" Thank you, and I am happy to take your questions."}

@@ -1,0 +1,39 @@
+Vompt is a teleprompter that listens. Read your script at your own pace and the screen follows your voice: the word you're on lights up, and the current line stays on the reading mark. Skip a line, go back, or ad-lib, and Vompt catches up after a few words.
+
+When the take ends, you see how it went.
+
+HOW YOUR TAKE WENT
+• Pace in words a minute, compared with a comfortable 130 to 165
+• Every "um", "uh", "like" and "you know", counted and broken down
+• Sentences you skipped, quoted so you can find them
+• Words that didn't match the script, restarts, and long pauses
+• Short coaching notes from Apple Intelligence on supported devices
+
+PRACTICE THAT ADDS UP
+Every take is saved with its script. Watch your fillers a minute fall from one take to the next.
+
+WRITE BETTER SCRIPTS
+Assist uses Apple Intelligence, on your iPhone, to:
+• Make a script sound spoken instead of written
+• Tighten it without losing a point
+• Fit it to 30 seconds, a minute, or any length
+• Fix spelling and grammar
+• Suggest opening lines that hook viewers
+• Draft a script from your bullet points
+
+RUN IT FROM YOUR COMPUTER
+Turn on Vompt Studio and open the link on a laptop on the same Wi-Fi. Write with a real keyboard, use Assist, send a script to the prompter, and start, pause and watch the take live, with the phone on its stand.
+
+MADE FOR REAL SETUPS
+• Mirror mode for beam-splitter teleprompter glass
+• Adjustable text size, centered or left-aligned lines
+• Long-press any word to continue from there
+• Works with AirPods and wired microphones
+• Keeps the screen awake while you read
+
+PRIVATE BY DESIGN
+Speech is recognized on the device. Nothing is recorded or uploaded, there's no account, and there are no ads or tracking. Your scripts stay on your iPhone.
+
+Vompt is free and its source code is public.
+
+Filler counting for "um" and "uh" and the fastest tracking require iOS 26 or later. Assist and coaching notes require a device with Apple Intelligence.
