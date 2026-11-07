@@ -4,16 +4,21 @@ Everything to enter in App Store Connect, field by field. Character counts are c
 
 ## Before you submit
 
-1. **Apple Developer Program.** Publishing needs the paid membership ($99 a year); a free Apple ID team can only install on your own devices, for 7 days at a time. Enroll at https://developer.apple.com/programs/enroll/ and put that team's ID in `vompt/ios/Flutter/Signing.xcconfig` (see the `.example` file next to it).
-2. **Bundle ID.** The app still uses the leftover ID `com.fluttele.fluttele`. A bundle ID can't change after release, so pick the permanent one now, for example `com.wreeves.vompt`. Change it in Xcode (Runner target > Signing & Capabilities) or in `vompt/ios/Runner.xcodeproj/project.pbxproj` (three `PRODUCT_BUNDLE_IDENTIFIER` lines for Runner). Installing under a new ID makes a separate app on your phone; scripts in the old one stay there.
-3. **Create the app** in App Store Connect > Apps > New App: platform iOS, name below, primary language English (U.S.), the bundle ID from step 2, and an SKU such as `vompt-ios`.
+1. **Signing.** Put your Apple Developer Team ID in `vompt/ios/Flutter/Signing.xcconfig` (copy the `.example` next to it). The file is git-ignored.
+2. **Bundle ID.** The App Store Connect record uses `com.fluttele.fluttele`, a leftover from the app's working name. Users never see it, and changing it would mean a new App Store record, so keep it.
+3. **Build numbers.** Every upload needs a higher build number than the last. They are date-based: `version: 1.0.0+2026110701` in `vompt/pubspec.yaml` means 1.0.0 (2026110701); the next upload that day is `...02`, the next day `2026110801`.
 4. **Upload a build:**
    ```bash
    cd vompt
    flutter build ipa --release
-   open build/ios/ipa   # drag the .ipa into Transporter, or use Xcode > Organizer
    ```
-   Version 1.0.0, build 1 (set in `vompt/pubspec.yaml` as `version: 1.0.0+1`; raise the number after `+` for every upload).
+   Then either drag `build/ios/ipa/*.ipa` into Transporter, or upload straight from the archive with
+   `xcodebuild -exportArchive -archivePath build/ios/archive/Runner.xcarchive -exportOptionsPlist <plist> -allowProvisioningUpdates`,
+   where the plist sets `method` to `app-store-connect`, `destination` to `upload` and your `teamID`.
+   The build appears in App Store Connect under TestFlight after processing (usually 10 to 30 minutes).
+
+   If the export stops with "Copy failed", a Homebrew `rsync` is shadowing the system one. Run the
+   `xcodebuild` command with `env PATH=/usr/bin:/bin:/usr/sbin:/sbin` in front of it.
 
 ## App information
 
