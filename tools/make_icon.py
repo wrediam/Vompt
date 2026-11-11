@@ -8,8 +8,8 @@ from PIL import Image, ImageDraw, ImageFilter
 
 S = 4096                      # supersample, downscaled to 1024 at the end
 k = S / 1024
-INK_CENTER = (30, 29, 27)     # lifted graphite at the center
-INK_EDGE = (9, 9, 8)
+INK_CENTER = (27, 34, 58)     # lifted navy at the center
+INK_EDGE = (7, 9, 17)
 PAPER = (248, 245, 238)
 CUE = (255, 192, 56)
 TALLY = (242, 73, 59)

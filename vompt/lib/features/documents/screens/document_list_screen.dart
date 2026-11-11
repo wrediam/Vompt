@@ -298,17 +298,6 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
                       : row;
                 },
               ),
-            if (docs.isNotEmpty)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(32, 20, 32, 0),
-                  child: Text(
-                    'Tip: press and hold a script, or tap \u2026, to rehearse, see versions, rename or duplicate. Swipe left to delete.',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ),
-              ),
             const SliverToBoxAdapter(child: SizedBox(height: 120)),
           ],
         ),

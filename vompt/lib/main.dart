@@ -11,9 +11,9 @@ Future<void> main() async {
   // Set system UI to dark immediately
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: Color(0xFF131312),
+      statusBarColor: Color(0xFF0D111C),
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Color(0xFF131312),
+      systemNavigationBarColor: Color(0xFF0D111C),
       systemNavigationBarIconBrightness: Brightness.light,
     ),
   );

@@ -25,12 +25,12 @@ OUT = ROOT / "store/marketing"
 FONTS = ROOT / "vompt/assets/fonts"
 STUDIO = ROOT / "docs/images/studio-live.png"
 
-INK = (19, 19, 18)
-INK_LIFT = (38, 36, 33)
-RAISED = (31, 30, 28)
-LINE = (54, 52, 48)
+INK = (13, 17, 28)
+INK_LIFT = (28, 36, 58)
+RAISED = (22, 27, 41)
+LINE = (42, 49, 67)
 PAPER = (242, 239, 232)
-MUTED = (160, 155, 146)
+MUTED = (143, 151, 170)
 CUE = (255, 194, 74)
 
 # (scene, headline, subline). Order follows the pitch.
