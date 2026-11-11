@@ -1,24 +1,27 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Vompt's palette, borrowed from the broadcast studio.
 ///
 /// Color always carries meaning here: tally red means the mic is live,
 /// cue amber marks where the reader is. Neither is used as decoration.
 class AppColors {
-  /// Eigengrau: the grey the eye sees in total darkness. App surfaces.
-  static const Color ink = Color(0xFF16161D);
+  /// Warm graphite: near-black with no blue cast. App surfaces.
+  static const Color ink = Color(0xFF131312);
 
-  /// Raised surfaces: sheets, fields, rows on press.
-  static const Color raised = Color(0xFF20212A);
+  /// Raised surfaces: sheets, fields, menus.
+  static const Color raised = Color(0xFF1F1E1C);
+
+  /// A step above raised: pressed rows, selected items, inputs on sheets.
+  static const Color raisedHigh = Color(0xFF2A2926);
 
   /// Hairlines and quiet borders.
-  static const Color line = Color(0xFF2E3039);
+  static const Color line = Color(0xFF363430);
 
   /// Reading text: a warm white that is easier on the eyes than #FFF.
-  static const Color paper = Color(0xFFECEAE4);
+  static const Color paper = Color(0xFFF2EFE8);
 
-  /// Secondary text and inactive icons.
-  static const Color muted = Color(0xFF8C8E9B);
+  /// Secondary text and inactive icons (about 6.9:1 on ink).
+  static const Color muted = Color(0xFFA09B92);
 
   /// Tally light: the mic is listening.
   static const Color tally = Color(0xFFF2493B);

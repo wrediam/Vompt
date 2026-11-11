@@ -43,6 +43,8 @@ SCENES = [
     ("4-assist", "assist", "portrait"),
     ("5-history", "history", "portrait"),
     ("6-editor", "editor", "portrait"),
+    ("7-versions", "versions", "portrait"),
+    ("8-version-diff", "version-diff", "portrait"),
 ]
 
 

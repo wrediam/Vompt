@@ -1,18 +1,29 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import '../../../shared/widgets/readable_width.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/utils/dates.dart';
 import '../../../data/models/document.dart';
+import '../../../data/models/script_version.dart';
+import '../../../data/repositories/version_repository.dart';
+import '../../../shared/widgets/lift_menu.dart';
+import '../../../shared/widgets/motion.dart';
+import '../../../shared/widgets/vompt_dialog.dart';
 import '../../editor/screens/editor_screen.dart';
+import '../../teleprompter/screens/intelligent_teleprompter_screen.dart';
+import '../../versions/versions_screen.dart';
 import '../../remote/providers/server_provider.dart';
 import '../../remote/screens/remote_control_screen.dart';
 import '../providers/documents_provider.dart';
 import '../widgets/document_list_item.dart';
 
 class DocumentListScreen extends StatefulWidget {
-  const DocumentListScreen({super.key});
+  /// Screenshots only (see showcase.dart): opens this script's menu on load.
+  final String? showcaseMenuFor;
+
+  const DocumentListScreen({super.key, this.showcaseMenuFor});
 
   @override
   State<DocumentListScreen> createState() => _DocumentListScreenState();
@@ -21,12 +32,29 @@ class DocumentListScreen extends StatefulWidget {
 class _DocumentListScreenState extends State<DocumentListScreen> {
   final _search = TextEditingController();
 
+  /// Rows rise in, one after another, when the list first appears.
+  bool _entrance = true;
+  final _showcaseRow = GlobalKey();
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DocumentsProvider>().loadDocuments();
     });
+    Future.delayed(const Duration(milliseconds: 1400), () {
+      if (mounted) setState(() => _entrance = false);
+    });
+    final showcase = widget.showcaseMenuFor;
+    if (showcase != null) {
+      Future.delayed(const Duration(milliseconds: 2200), () {
+        if (!mounted) return;
+        final doc = context.read<DocumentsProvider>().getDocument(showcase);
+        final row = _showcaseRow.currentContext;
+        if (row == null || !row.mounted || doc == null) return;
+        _showActions(doc, row);
+      });
+    }
   }
 
   @override
@@ -52,27 +80,16 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
   }
 
   Future<bool> _confirmDelete(Document doc) async {
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Delete "${doc.title}"?'),
-        content: const Text(
-          'The script and its practice history will be removed from this iPhone.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Keep'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(foregroundColor: AppColors.tally),
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
+    final ok = await confirmDialog(
+      context,
+      title: 'Delete "${doc.title}"?',
+      message:
+          'The script, its versions and its practice history will be removed from this iPhone.',
+      confirmLabel: 'Delete script',
+      cancelLabel: 'Keep it',
+      destructive: true,
     );
-    if (ok == true && mounted) {
+    if (ok && mounted) {
       await context.read<DocumentsProvider>().deleteDocument(doc.id);
       return true;
     }
@@ -80,28 +97,12 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
   }
 
   Future<void> _rename(Document doc) async {
-    final controller = TextEditingController(text: doc.title);
-    final title = await showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Rename script'),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          textCapitalization: TextCapitalization.sentences,
-          onSubmitted: (v) => Navigator.pop(context, v),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, controller.text),
-            child: const Text('Rename'),
-          ),
-        ],
-      ),
+    final title = await textDialog(
+      context,
+      title: 'Rename script',
+      initial: doc.title,
+      hint: 'Script title',
+      confirmLabel: 'Rename',
     );
     final trimmed = title?.trim() ?? '';
     if (trimmed.isNotEmpty && trimmed != doc.title && mounted) {
@@ -111,46 +112,82 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
     }
   }
 
-  void _showActions(Document doc) {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (sheet) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.edit_outlined),
-              title: const Text('Rename'),
-              onTap: () {
-                Navigator.pop(sheet);
-                _rename(doc);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.copy_rounded),
-              title: const Text('Duplicate'),
-              onTap: () {
-                Navigator.pop(sheet);
-                context.read<DocumentsProvider>().duplicateDocument(doc);
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.delete_outline_rounded,
-                color: AppColors.tally,
-              ),
-              title: const Text(
-                'Delete',
-                style: TextStyle(color: AppColors.tally),
-              ),
-              onTap: () {
-                Navigator.pop(sheet);
-                _confirmDelete(doc);
-              },
-            ),
-          ],
+  void _rehearse(Document doc) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => IntelligentTeleprompterScreen(document: doc),
+      ),
+    );
+  }
+
+  Future<void> _versions(Document doc) async {
+    final docs = context.read<DocumentsProvider>();
+    final restored = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => VersionsScreen(
+          document: doc,
+          onRestore: (v) async {
+            final repo = VersionRepository();
+            final current = docs.getDocument(doc.id) ?? doc;
+            await repo.checkpoint(current, VersionKind.edit);
+            final restored = current.copyWith(content: v.content);
+            await docs.updateDocument(restored);
+            await repo.checkpoint(
+              restored,
+              VersionKind.restore,
+              label: friendlyWhen(v.createdAt),
+            );
+          },
         ),
       ),
+    );
+    if (restored == true && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Version restored. Your previous text is in Versions.'),
+        ),
+      );
+    }
+  }
+
+  void _showActions(Document doc, BuildContext anchor) {
+    final provider = context.read<DocumentsProvider>();
+    showLiftMenu(
+      context,
+      anchor: anchor,
+      preview: ScriptSummary(
+        document: doc,
+        latestTake: provider.latestTake(doc.id),
+      ),
+      items: [
+        LiftMenuItem(
+          icon: Icons.play_arrow_rounded,
+          label: 'Rehearse',
+          primary: true,
+          onSelected: () => _rehearse(doc),
+        ),
+        LiftMenuItem(
+          icon: Icons.history_rounded,
+          label: 'Versions',
+          onSelected: () => _versions(doc),
+        ),
+        LiftMenuItem(
+          icon: Icons.edit_outlined,
+          label: 'Rename',
+          onSelected: () => _rename(doc),
+        ),
+        LiftMenuItem(
+          icon: Icons.copy_rounded,
+          label: 'Duplicate',
+          onSelected: () => provider.duplicateDocument(doc),
+        ),
+        LiftMenuItem(
+          icon: Icons.delete_outline_rounded,
+          label: 'Delete',
+          destructive: true,
+          onSelected: () => _confirmDelete(doc),
+        ),
+      ],
     );
   }
 
@@ -244,14 +281,33 @@ class _DocumentListScreenState extends State<DocumentListScreen> {
                     const Divider(indent: 20, endIndent: 20),
                 itemBuilder: (context, i) {
                   final doc = docs[i];
-                  return DocumentListItem(
+                  final row = DocumentListItem(
+                    key: doc.id == widget.showcaseMenuFor ? _showcaseRow : null,
                     document: doc,
                     latestTake: provider.latestTake(doc.id),
                     onTap: () => _open(doc),
-                    onLongPress: () => _showActions(doc),
+                    onActions: (anchor) => _showActions(doc, anchor),
                     onDelete: () => _confirmDelete(doc),
                   );
+                  return _entrance && i < 10
+                      ? RiseIn(
+                          key: ValueKey('rise-${doc.id}'),
+                          delay: Duration(milliseconds: 60 + 55 * i),
+                          child: row,
+                        )
+                      : row;
                 },
+              ),
+            if (docs.isNotEmpty)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 20, 32, 0),
+                  child: Text(
+                    'Tip: press and hold a script, or tap \u2026, to rehearse, see versions, rename or duplicate. Swipe left to delete.',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
               ),
             const SliverToBoxAdapter(child: SizedBox(height: 120)),
           ],

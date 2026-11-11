@@ -33,7 +33,8 @@ Free on iPhone and iPad. Everything runs on the device: no account, no cloud, no
 - **Counts your fillers.** "Um", "uh", "like", "you know": after every take you see how many, which ones, and how your pace compares to a comfortable 130 to 165 words a minute.
 - **Shows what you missed.** Skipped sentences, words that didn't match the script, restarts, and long pauses.
 - **Tracks your progress.** Every take is saved per script, with a trend line for fillers a minute.
-- **Rewrites with Apple Intelligence.** Make a script sound spoken, tighten it, fit it to 60 seconds, fix grammar, get opening lines, or draft from bullet points, all on the device.
+- **Rewrites with Apple Intelligence.** Make a script sound spoken, tighten it, fit it to 60 seconds, fix grammar, get opening lines, or draft from bullet points, all on the device. Every rewrite shows exactly what changed before you use it.
+- **Keeps every draft.** Versions are saved as you edit and whenever Assist rewrites. Compare any version with your script now, word by word, and restore it in a tap.
 - **Runs from your computer.** Vompt Studio is a web page served by the phone on your Wi-Fi: write scripts with a real keyboard, use the same tools, and start, pause and watch the prompter live.
 - **Built for real setups.** Mirror mode for beam-splitter glass, adjustable text size, works with AirPods and wired mics, keeps the screen awake.
 
@@ -86,7 +87,14 @@ flutter run --profile        # on a connected iPhone
 
 To install on your own device, copy `vompt/ios/Flutter/Signing.xcconfig.example` to `Signing.xcconfig` in the same folder and put your Apple Developer Team ID in it. That file is git-ignored, so your team ID never ends up in a commit.
 
-App Store screenshots are generated, not hand-made: `tools/screenshots.py` launches the simulator into staged screens with demo content. The app icon is drawn by `tools/make_icon.py`.
+App Store screenshots are generated, not hand-made: `tools/screenshots.py` launches the simulator into staged screens with demo content, and `tools/marketing.py` adds captions. The app icon is drawn by `tools/make_icon.py`. Both image scripts need Pillow:
+
+```bash
+python3 -m venv tools/.venv && tools/.venv/bin/pip install pillow
+tools/.venv/bin/python tools/marketing.py
+```
+
+To work on Vompt Studio without the phone, run `python3 tools/studio_preview.py` and open the link it prints. It serves the page with demo data.
 
 ## Project layout
 

@@ -40,6 +40,12 @@ Tests in `test/engine` replay real recognizer output recorded from synthesized t
 | `features/history` | Takes per script and the filler trend |
 | `features/remote` | Web remote status and `RemoteCoordinator` |
 
+## Versions and differences
+
+`data/repositories/version_repository.dart` keeps up to 60 snapshots per script in `script_versions`. A version is saved when a script opens with text that changed elsewhere, at most every 10 minutes while editing, when the editor closes, before and after every Assist rewrite, and on restore (the current text is saved first, so restoring is always reversible). Identical text never creates a duplicate.
+
+`core/utils/text_diff.dart` compares texts word by word with Hirschberg's algorithm (linear memory) after trimming the shared start and end. Spacing and line breaks never count as changes. Vompt Studio uses a JavaScript port of the same algorithm, so both show identical differences.
+
 ## Apple Intelligence
 
 `ios/Runner/AIPlugin.swift` exposes `LanguageModelSession` (Foundation Models) over a method channel. Prompts live in `lib/services/script_assistant.dart`, so the app and the web remote share them. Long scripts are processed paragraph by paragraph to fit the on-device model's context window.
@@ -52,11 +58,12 @@ Navigation the browser asks for (open a script, close the prompter) goes through
 
 ## Storage
 
-`data/database/database_helper.dart`, schema version 2:
+`data/database/database_helper.dart`, schema version 3:
 
 - `documents`: scripts
 - `settings`: one row of display preferences
 - `practice_sessions`: one row per finished take (fillers as JSON)
+- `script_versions`: saved versions of each script (schema version 3)
 
 ## Screenshots and icon
 

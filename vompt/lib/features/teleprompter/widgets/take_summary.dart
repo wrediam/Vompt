@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../services/script_assistant.dart';
+import '../../../shared/widgets/motion.dart';
 import '../engine/performance_analyzer.dart';
 import 'intelligent_teleprompter_controls.dart' show formatClock;
 
@@ -209,12 +210,27 @@ class TakeSummary extends StatelessWidget {
                   ? Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(flex: 5, child: left),
+                        Expanded(flex: 5, child: RiseIn(child: left)),
                         const SizedBox(width: 48),
-                        Expanded(flex: 6, child: right),
+                        Expanded(
+                          flex: 6,
+                          child: RiseIn(
+                            delay: const Duration(milliseconds: 160),
+                            child: right,
+                          ),
+                        ),
                       ],
                     )
-                  : Column(children: [left, const SizedBox(height: 32), right]),
+                  : Column(
+                      children: [
+                        RiseIn(child: left),
+                        const SizedBox(height: 32),
+                        RiseIn(
+                          delay: const Duration(milliseconds: 160),
+                          child: right,
+                        ),
+                      ],
+                    ),
             );
           },
         ),
@@ -346,12 +362,20 @@ class _CountRow extends StatelessWidget {
             child: LayoutBuilder(
               builder: (context, c) => Align(
                 alignment: Alignment.centerLeft,
-                child: Container(
-                  height: 8,
-                  width: c.maxWidth * count / max,
-                  decoration: BoxDecoration(
-                    color: AppColors.cue,
-                    borderRadius: BorderRadius.circular(4),
+                // Bars grow to their value as the summary appears.
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: count / max),
+                  duration: Duration(
+                    milliseconds: reduceMotion(context) ? 1 : 900,
+                  ),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, f, _) => Container(
+                    height: 8,
+                    width: c.maxWidth * f,
+                    decoration: BoxDecoration(
+                      color: AppColors.cue,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                   ),
                 ),
               ),

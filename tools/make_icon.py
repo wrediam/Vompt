@@ -1,14 +1,17 @@
 """Draws the Vompt app icon: three prompter lines, the current word lit in cue
-amber, and the cue mark pointing at it. Full-bleed square; iOS applies the mask."""
+amber, and the cue mark pointing at it. Full-bleed square; iOS applies the mask.
+
+    tools/.venv/bin/python tools/make_icon.py icon.png
+"""
 import sys
 from PIL import Image, ImageDraw, ImageFilter
 
 S = 4096                      # supersample, downscaled to 1024 at the end
 k = S / 1024
-INK_CENTER = (34, 35, 46)     # lifted eigengrau at the center
-INK_EDGE = (17, 17, 23)
-PAPER = (236, 234, 228)
-CUE = (255, 194, 74)
+INK_CENTER = (30, 29, 27)     # lifted graphite at the center
+INK_EDGE = (9, 9, 8)
+PAPER = (248, 245, 238)
+CUE = (255, 192, 56)
 TALLY = (242, 73, 59)
 
 img = Image.new("RGB", (S, S), INK_EDGE)
@@ -25,7 +28,7 @@ def bar(x0, x1, yc, color, h=66):
 
 left = 322
 # Read line: dimmed, like words already spoken.
-bar(left, 804, 368, PAPER + (96,))
+bar(left, 804, 368, PAPER + (112,))
 # Current line: the word being read glows amber.
 halo = Image.new("RGBA", (S, S), (0, 0, 0, 0))
 ImageDraw.Draw(halo).rounded_rectangle([(left - 14) * k, 462 * k, 556 * k, 546 * k], radius=42 * k, fill=CUE + (120,))

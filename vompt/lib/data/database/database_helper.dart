@@ -60,6 +60,7 @@ class DatabaseHelper {
     ''');
 
     await _createPracticeTable(db);
+    await _createVersionsTable(db);
 
     // A first script that teaches the app while you read it aloud.
     final now = DateTime.now().millisecondsSinceEpoch;
@@ -70,6 +71,7 @@ class DatabaseHelper {
       'createdAt': now,
       'modifiedAt': now,
     });
+    await _seedVersions(db);
 
     // Insert default settings
     await db.insert(AppConstants.settingsTable, {
@@ -93,6 +95,44 @@ class DatabaseHelper {
       await db.execute(
         'ALTER TABLE ${AppConstants.settingsTable} ADD COLUMN centerText INTEGER NOT NULL DEFAULT 1',
       );
+    }
+    if (oldVersion < 3) {
+      await _createVersionsTable(db);
+      await _seedVersions(db);
+    }
+  }
+
+  Future<void> _createVersionsTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE ${AppConstants.versionsTable} (
+        id TEXT PRIMARY KEY,
+        documentId TEXT NOT NULL,
+        createdAt INTEGER NOT NULL,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        kind TEXT NOT NULL,
+        label TEXT
+      )
+    ''');
+    await db.execute(
+      'CREATE INDEX idx_versions_document ON ${AppConstants.versionsTable} (documentId, createdAt)',
+    );
+  }
+
+  /// Every script starts its history with its current text.
+  Future<void> _seedVersions(Database db) async {
+    final docs = await db.query(AppConstants.documentsTable);
+    for (final d in docs) {
+      if ((d['content'] as String).trim().isEmpty) continue;
+      await db.insert(AppConstants.versionsTable, {
+        'id': 'seed-${d['id']}',
+        'documentId': d['id'],
+        'createdAt': d['modifiedAt'],
+        'title': d['title'],
+        'content': d['content'],
+        'kind': 'original',
+        'label': null,
+      });
     }
   }
 

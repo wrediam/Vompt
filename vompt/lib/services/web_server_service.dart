@@ -10,8 +10,12 @@ import 'package:shelf_router/shelf_router.dart';
 import 'package:uuid/uuid.dart';
 
 import '../core/constants/app_constants.dart';
+import '../core/utils/dates.dart';
 import '../data/models/document.dart';
+import '../data/models/script_version.dart';
 import '../data/repositories/document_repository.dart';
+import '../data/repositories/practice_repository.dart';
+import '../data/repositories/version_repository.dart';
 import 'remote_control_service.dart';
 import 'script_assistant.dart';
 
@@ -23,6 +27,7 @@ import 'script_assistant.dart';
 class WebServerService {
   HttpServer? _server;
   final DocumentRepository _documents = DocumentRepository();
+  final VersionRepository _versions = VersionRepository();
   final RemoteControlService _remote = RemoteControlService();
   final int port;
   String? _localIpAddress;
@@ -162,6 +167,7 @@ class WebServerService {
         modifiedAt: now,
       );
       await _documents.create(doc);
+      await _versions.checkpoint(doc, VersionKind.original);
       _remote.documentsChanged();
       return _json(doc.toJson());
     });
@@ -175,14 +181,78 @@ class WebServerService {
         title: title == null || title.isEmpty ? doc.title : title,
         modifiedAt: DateTime.now(),
       );
+      // An accepted Assist result is saved as its own version, with the
+      // text before it kept too; ordinary typing leaves a version at most
+      // every few minutes.
+      final assist = (body['assist'] as String?)?.trim();
+      if (assist != null) await _versions.checkpoint(doc, VersionKind.edit);
       await _documents.update(updated);
+      if (assist != null) {
+        await _versions.checkpoint(
+          updated,
+          VersionKind.assist,
+          label: assist.isEmpty ? null : assist,
+        );
+      } else {
+        await _versions.checkpoint(
+          updated,
+          VersionKind.studio,
+          minGap: VersionRepository.editInterval,
+        );
+      }
       _remote.documentsChanged();
       return _json(updated.toJson());
     });
     r.delete('/api/documents/<id>', (Request _, String id) async {
       await _documents.delete(id);
+      await PracticeRepository().deleteForDocument(id);
+      await _versions.deleteForDocument(id);
       _remote.documentsChanged();
       return _json({'success': true});
+    });
+
+    // Versions
+    r.get('/api/documents/<id>/versions', (Request _, String id) async {
+      final doc = await _documents.read(id);
+      if (doc == null) return _json({'error': 'Script not found'}, status: 404);
+      await _versions.checkpoint(doc, VersionKind.studio);
+      final versions = await _versions.forDocument(id);
+      return _json([
+        for (final v in versions)
+          {
+            'id': v.id,
+            'createdAt': v.createdAt.toIso8601String(),
+            'when': friendlyWhen(v.createdAt),
+            'kind': v.kind.name,
+            'headline': v.headline,
+            'wordCount': v.wordCount,
+            'content': v.content,
+          },
+      ]);
+    });
+    r.post('/api/documents/<id>/restore', (Request request, String id) async {
+      final versionId = (await _body(request))['versionId'] as String?;
+      final doc = await _documents.read(id);
+      if (doc == null) return _json({'error': 'Script not found'}, status: 404);
+      final version = (await _versions.forDocument(id))
+          .where((v) => v.id == versionId)
+          .firstOrNull;
+      if (version == null) {
+        return _json({'error': 'That version no longer exists'}, status: 404);
+      }
+      await _versions.checkpoint(doc, VersionKind.edit);
+      final restored = doc.copyWith(
+        content: version.content,
+        modifiedAt: DateTime.now(),
+      );
+      await _documents.update(restored);
+      await _versions.checkpoint(
+        restored,
+        VersionKind.restore,
+        label: friendlyWhen(version.createdAt),
+      );
+      _remote.documentsChanged();
+      return _json(restored.toJson());
     });
 
     // Teleprompter control

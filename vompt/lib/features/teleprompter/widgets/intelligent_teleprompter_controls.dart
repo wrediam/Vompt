@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/cue_switch.dart';
+import '../../../shared/widgets/motion.dart';
 import '../providers/intelligent_teleprompter_provider.dart';
 
 String formatClock(Duration d) {
@@ -310,22 +312,7 @@ class TallyLight extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: live ? AppColors.tally : AppColors.muted,
-              boxShadow: live
-                  ? [
-                      BoxShadow(
-                        color: AppColors.tally.withValues(alpha: 0.7),
-                        blurRadius: 8,
-                      ),
-                    ]
-                  : null,
-            ),
-          ),
+          _TallyDot(live: live),
           const SizedBox(width: 8),
           Text(
             text,
@@ -427,62 +414,116 @@ class StatsReadout extends StatelessWidget {
   }
 }
 
+/// Display settings in a panel that slides in from the right. The prompter
+/// stays visible (dimmed, not blurred) so size and alignment changes show live.
 Future<void> showDisplaySheet(BuildContext context) {
-  return showModalBottomSheet<void>(
+  final provider = context.read<IntelligentTeleprompterProvider>();
+  return showGeneralDialog<void>(
     context: context,
-    isScrollControlled: true,
-    builder: (sheetContext) => ChangeNotifierProvider.value(
-      value: context.read<IntelligentTeleprompterProvider>(),
-      child: Consumer<IntelligentTeleprompterProvider>(
-        builder: (context, p, _) => SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+    barrierDismissible: true,
+    barrierLabel: 'Close display settings',
+    barrierColor: Colors.black.withValues(alpha: 0.25),
+    transitionDuration: Duration(milliseconds: reduceMotion(context) ? 1 : 340),
+    pageBuilder: (_, _, _) => ChangeNotifierProvider.value(
+      value: provider,
+      child: const _DisplayPanel(),
+    ),
+    transitionBuilder: (context, animation, _, child) {
+      final t = CurvedAnimation(
+        parent: animation,
+        curve: Curves.easeOutCubic,
+        reverseCurve: Curves.easeInCubic,
+      );
+      return SlideTransition(
+        position: Tween(begin: const Offset(1, 0), end: Offset.zero).animate(t),
+        child: child,
+      );
+    },
+  );
+}
+
+class _DisplayPanel extends StatelessWidget {
+  const _DisplayPanel();
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.watch<IntelligentTeleprompterProvider>();
+    final text = Theme.of(context).textTheme;
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        width: 360,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          color: AppColors.raised,
+          borderRadius: BorderRadius.horizontal(left: Radius.circular(28)),
+          border: Border(left: BorderSide(color: AppColors.line)),
+        ),
+        child: Material(
+          type: MaterialType.transparency,
+          child: SafeArea(
+            left: false,
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(24, 18, 20, 24),
               children: [
-                Text('Display', style: Theme.of(context).textTheme.titleLarge),
-                const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Text('Text size'),
-                    Expanded(
-                      child: Slider(
-                        min: 16,
-                        max: 72,
-                        divisions: 28,
-                        value: p.fontSize,
-                        label: '${p.fontSize.toInt()}',
-                        onChanged: p.setFontSize,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 32,
-                      child: Text(
-                        '${p.fontSize.toInt()}',
-                        style: AppTheme.figureSmall,
-                      ),
+                    Expanded(child: Text('Display', style: text.titleLarge)),
+                    _RoundButton(
+                      icon: Icons.close_rounded,
+                      label: 'Close',
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ],
                 ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Center lines'),
+                const SizedBox(height: 18),
+                Text('Text size', style: text.titleSmall),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    _RoundButton(
+                      icon: Icons.remove_rounded,
+                      label: 'Smaller text',
+                      onPressed: p.decreaseFontSize,
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          '${p.fontSize.toInt()}',
+                          style: AppTheme.figure,
+                        ),
+                      ),
+                    ),
+                    _RoundButton(
+                      icon: Icons.add_rounded,
+                      label: 'Larger text',
+                      onPressed: p.increaseFontSize,
+                    ),
+                  ],
+                ),
+                Slider(
+                  min: 16,
+                  max: 72,
+                  divisions: 28,
+                  value: p.fontSize,
+                  onChanged: p.setFontSize,
+                ),
+                const Divider(height: 28),
+                SwitchRow(
+                  title: 'Center lines',
+                  subtitle: 'Off lines up text on the left',
                   value: p.centerText,
                   onChanged: (_) => p.toggleCenterText(),
                 ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Mirror for glass'),
-                  subtitle: const Text(
-                    'Flip text for a beam-splitter teleprompter',
-                  ),
+                SwitchRow(
+                  title: 'Mirror for glass',
+                  subtitle: 'Flip text for a beam-splitter teleprompter',
                   value: p.isMirrored,
                   onChanged: (_) => p.toggleMirror(),
                 ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Show time, pace and fillers'),
+                SwitchRow(
+                  title: 'Time, pace and fillers',
+                  subtitle: 'The readout in the top corner',
                   value: p.showStats,
                   onChanged: (_) => p.toggleStats(),
                 ),
@@ -491,6 +532,100 @@ Future<void> showDisplaySheet(BuildContext context) {
           ),
         ),
       ),
-    ),
+    );
+  }
+}
+
+/// The tally dot. While live it sends out a slow ring, like an on-air light.
+class _TallyDot extends StatefulWidget {
+  final bool live;
+  const _TallyDot({required this.live});
+
+  @override
+  State<_TallyDot> createState() => _TallyDotState();
+}
+
+class _TallyDotState extends State<_TallyDot>
+    with SingleTickerProviderStateMixin {
+  late final _c = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1600),
   );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sync();
+  }
+
+  @override
+  void didUpdateWidget(_TallyDot old) {
+    super.didUpdateWidget(old);
+    _sync();
+  }
+
+  void _sync() {
+    if (widget.live && !reduceMotion(context)) {
+      if (!_c.isAnimating) _c.repeat();
+    } else {
+      _c.stop();
+      _c.value = 0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final color = widget.live ? AppColors.tally : AppColors.muted;
+    return SizedBox(
+      width: 10,
+      height: 10,
+      child: AnimatedBuilder(
+        animation: _c,
+        builder: (context, _) => CustomPaint(
+          painter: _TallyPainter(color: color, ring: widget.live ? _c.value : null),
+        ),
+      ),
+    );
+  }
+}
+
+class _TallyPainter extends CustomPainter {
+  final Color color;
+  final double? ring;
+  _TallyPainter({required this.color, this.ring});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final c = size.center(Offset.zero);
+    final r = size.width / 2;
+    final t = ring;
+    if (t != null) {
+      final eased = Curves.easeOut.transform(t);
+      canvas.drawCircle(
+        c,
+        r + r * 1.6 * eased,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.6
+          ..color = color.withValues(alpha: 0.7 * (1 - eased)),
+      );
+      canvas.drawCircle(
+        c,
+        r * 1.3,
+        Paint()
+          ..color = color.withValues(alpha: 0.35)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4),
+      );
+    }
+    canvas.drawCircle(c, r, Paint()..color = color);
+  }
+
+  @override
+  bool shouldRepaint(_TallyPainter old) => old.ring != ring || old.color != color;
 }

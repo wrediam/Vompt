@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Builds App Store marketing art from the raw screenshots.
 
-    pip install pillow
-    python3 tools/marketing.py
+    python3 -m venv tools/.venv && tools/.venv/bin/pip install pillow
+    tools/.venv/bin/python tools/marketing.py
 
 Inputs: store/screenshots/* (from tools/screenshots.py) and
 docs/images/studio-live.png (Vompt Studio's Live tab).
@@ -25,12 +25,12 @@ OUT = ROOT / "store/marketing"
 FONTS = ROOT / "vompt/assets/fonts"
 STUDIO = ROOT / "docs/images/studio-live.png"
 
-INK = (22, 22, 29)
-INK_LIFT = (36, 37, 49)
-RAISED = (32, 33, 42)
-LINE = (46, 48, 57)
-PAPER = (236, 234, 228)
-MUTED = (140, 142, 155)
+INK = (19, 19, 18)
+INK_LIFT = (38, 36, 33)
+RAISED = (31, 30, 28)
+LINE = (54, 52, 48)
+PAPER = (242, 239, 232)
+MUTED = (160, 155, 146)
 CUE = (255, 194, 74)
 
 # (scene, headline, subline). Order follows the pitch.
@@ -45,6 +45,8 @@ SCENES = [
      "Pace, fillers, skipped lines and coaching notes after every take."),
     ("progress", "Watch the ums drop.",
      "Every take is saved, so you can see yourself get better."),
+    ("versions", "Every draft, kept.",
+     "Compare any version with your script now, and bring it back in a tap."),
 ]
 
 DEVICES = {
@@ -202,7 +204,11 @@ def art(scene, folder, box):
         px = x + w - ph.width - w * 0.03 if portrait_device else x
         place(layer, ph, px, top + br.height - ph.height * (0.20 if portrait_device else 0.45))
     else:
-        names = {"ai": ["6-editor.png", "4-assist.png"], "progress": ["3-library.png", "5-history.png"]}[scene]
+        names = {
+            "ai": ["6-editor.png", "4-assist.png"],
+            "progress": ["3-library.png", "5-history.png"],
+            "versions": ["7-versions.png", "8-version-diff.png"],
+        }[scene]
         shots = [load(folder, n) for n in names]
         gap = w * 0.04
         if portrait_device:

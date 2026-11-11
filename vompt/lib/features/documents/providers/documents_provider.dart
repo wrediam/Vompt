@@ -5,7 +5,9 @@ import 'package:uuid/uuid.dart';
 import '../../../data/models/document.dart';
 import '../../../data/models/practice_session.dart';
 import '../../../data/repositories/document_repository.dart';
+import '../../../data/models/script_version.dart';
 import '../../../data/repositories/practice_repository.dart';
+import '../../../data/repositories/version_repository.dart';
 import '../../../services/remote_control_service.dart';
 
 class DocumentsProvider with ChangeNotifier {
@@ -78,6 +80,7 @@ class DocumentsProvider with ChangeNotifier {
       );
 
       await _repository.create(document);
+      await VersionRepository().checkpoint(document, VersionKind.original);
       _documents.insert(0, document); // Add to beginning
       notifyListeners();
       return document;
@@ -115,6 +118,7 @@ class DocumentsProvider with ChangeNotifier {
     try {
       await _repository.delete(id);
       await PracticeRepository().deleteForDocument(id);
+      await VersionRepository().deleteForDocument(id);
       _documents.removeWhere((doc) => doc.id == id);
       notifyListeners();
       return true;

@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/utils/text_diff.dart';
 import '../../../services/script_assistant.dart';
+import '../../../shared/widgets/diff_text.dart';
+import '../../../shared/widgets/motion.dart';
 
 /// What the editor should do with an assistant result.
 class AssistResult {
@@ -44,6 +47,10 @@ class _AssistSheetState extends State<_AssistSheet> {
   ScriptTask? _task;
   int _seconds = 60;
   String? _result;
+  TextDiff? _diff;
+
+  /// 0 shows what changed, 1 the clean new text.
+  int _view = 0;
   String? _error;
 
   static const _lengths = [30, 60, 90, 120, 180, 300];
@@ -56,6 +63,7 @@ class _AssistSheetState extends State<_AssistSheet> {
       _status = (available: true, reason: null);
       _task = preview.task;
       _result = preview.text;
+      _diff = TextDiff.compare(widget.script, preview.text);
       _stage = _Stage.review;
       return;
     }
@@ -89,6 +97,9 @@ class _AssistSheetState extends State<_AssistSheet> {
       if (!mounted) return;
       setState(() {
         _result = out;
+        _diff = TextDiff.compare(widget.script, out);
+        // A draft replaces notes rather than editing them; show it clean.
+        _view = _task == ScriptTask.draft ? 1 : 0;
         _stage = _Stage.review;
       });
     } catch (e) {
@@ -178,12 +189,18 @@ class _AssistSheetState extends State<_AssistSheet> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
-            child: Text('Assist', style: text.titleLarge),
+            child: Row(
+              children: [
+                const Icon(Icons.auto_awesome_rounded, color: AppColors.cue, size: 22),
+                const SizedBox(width: 10),
+                Text('Assist', style: text.titleLarge),
+              ],
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
             child: Text(
-              'Runs on this iPhone with Apple Intelligence.',
+              'Runs on this iPhone with Apple Intelligence. You see every change before it is used.',
               style: text.bodySmall,
             ),
           ),
@@ -206,15 +223,11 @@ class _AssistSheetState extends State<_AssistSheet> {
                 style: text.bodyLarge,
               ),
             ),
-          for (final t in tasks)
-            ListTile(
-              title: Text(t.label, style: text.titleSmall),
-              subtitle: Text(t.description, style: text.bodySmall),
-              trailing: const Icon(
-                Icons.chevron_right_rounded,
-                color: AppColors.muted,
-              ),
-              onTap: () => _choose(t),
+          for (var i = 0; i < tasks.length; i++)
+            RiseIn(
+              delay: Duration(milliseconds: 40 * i),
+              offset: 12,
+              child: _ToolCard(task: tasks[i], onTap: () => _choose(tasks[i])),
             ),
         ],
       ),
@@ -286,25 +299,59 @@ class _AssistSheetState extends State<_AssistSheet> {
         children: [
           Text(task.label, style: text.titleLarge),
           const SizedBox(height: 4),
-          Text(
-            task.rewrites
-                ? '$words words. Read it over before you use it.'
-                : 'Tap one to put it at the top of your script.',
-            style: text.bodySmall,
-          ),
-          const SizedBox(height: 16),
-          if (task.rewrites)
+          if (task.rewrites && _diff != null)
+            Wrap(
+              spacing: 12,
+              runSpacing: 2,
+              children: [
+                DiffCounts(diff: _diff!),
+                Text(
+                  '$words words in all. Read it over before you use it.',
+                  style: text.bodySmall,
+                ),
+              ],
+            )
+          else
+            Text(
+              task.rewrites
+                  ? '$words words. Read it over before you use it.'
+                  : 'Tap one to put it at the top of your script.',
+              style: text.bodySmall,
+            ),
+          const SizedBox(height: 14),
+          if (task.rewrites) ...[
+            SegmentToggle(
+              labels: const ['Changes', 'New version'],
+              selected: _view,
+              onChanged: (i) => setState(() => _view = i),
+            ),
+            const SizedBox(height: 12),
             Container(
-              constraints: const BoxConstraints(maxHeight: 360),
+              constraints: const BoxConstraints(maxHeight: 380),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppColors.ink,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.line),
               ),
               child: SingleChildScrollView(
-                child: SelectableText(result, style: text.bodyLarge),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: _view == 0 && _diff != null
+                      ? DiffText(
+                          key: const ValueKey('diff'),
+                          diff: _diff!,
+                          style: text.bodyLarge!,
+                        )
+                      : SelectableText(
+                          result,
+                          key: const ValueKey('clean'),
+                          style: text.bodyLarge,
+                        ),
+                ),
               ),
-            )
+            ),
+          ]
           else
             for (final line
                 in result.split('\n').where((l) => l.trim().isNotEmpty))
@@ -338,6 +385,64 @@ class _AssistSheetState extends State<_AssistSheet> {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ToolCard extends StatelessWidget {
+  final ScriptTask task;
+  final VoidCallback onTap;
+  const _ToolCard({required this.task, required this.onTap});
+
+  static IconData _icon(ScriptTask t) => switch (t) {
+    ScriptTask.speakable => Icons.record_voice_over_rounded,
+    ScriptTask.tighten => Icons.compress_rounded,
+    ScriptTask.fitTime => Icons.timer_outlined,
+    ScriptTask.grammar => Icons.spellcheck_rounded,
+    ScriptTask.hooks => Icons.format_quote_rounded,
+    ScriptTask.draft => Icons.edit_note_rounded,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final text = Theme.of(context).textTheme;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+      child: Pressable(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(12, 12, 14, 12),
+          decoration: BoxDecoration(
+            color: AppColors.raisedHigh,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppColors.cue.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(_icon(task), color: AppColors.cue, size: 22),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(task.label, style: text.titleSmall),
+                    const SizedBox(height: 2),
+                    Text(task.description, style: text.bodySmall),
+                  ],
+                ),
+              ),
+              const Icon(Icons.arrow_forward_rounded, color: AppColors.muted, size: 20),
+            ],
+          ),
+        ),
       ),
     );
   }

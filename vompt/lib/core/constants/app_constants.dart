@@ -5,10 +5,11 @@ class AppConstants {
 
   // Database
   static const String databaseName = 'vompt.db';
-  static const int databaseVersion = 2;
+  static const int databaseVersion = 3;
   static const String documentsTable = 'documents';
   static const String settingsTable = 'settings';
   static const String practiceTable = 'practice_sessions';
+  static const String versionsTable = 'script_versions';
 
   // Teleprompter Settings Defaults
   static const double defaultFontSize = 48.0;

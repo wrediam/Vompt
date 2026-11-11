@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'core/constants/app_constants.dart';
 import 'data/database/database_helper.dart';
 import 'data/models/document.dart';
 import 'data/models/practice_session.dart';
+import 'data/models/script_version.dart';
 import 'data/repositories/document_repository.dart';
 import 'data/repositories/practice_repository.dart';
 import 'data/repositories/settings_repository.dart';
@@ -18,7 +19,10 @@ import 'features/history/practice_history_screen.dart';
 import 'features/teleprompter/engine/performance_analyzer.dart';
 import 'features/teleprompter/providers/intelligent_teleprompter_provider.dart';
 import 'features/teleprompter/screens/intelligent_teleprompter_screen.dart';
+import 'features/versions/version_detail_screen.dart';
+import 'features/versions/versions_screen.dart';
 import 'services/script_assistant.dart';
+import 'shared/widgets/vompt_dialog.dart';
 
 /// Demo content and direct-to-screen launches for App Store screenshots.
 ///
@@ -168,6 +172,7 @@ class Showcase {
     final db = await DatabaseHelper.instance.database;
     await db.delete(AppConstants.documentsTable);
     await db.delete(AppConstants.practiceTable);
+    await db.delete(AppConstants.versionsTable);
     final docs = DocumentRepository();
     for (final d in _docs) {
       await docs.create(d);
@@ -175,6 +180,9 @@ class Showcase {
     final practice = PracticeRepository();
     for (final t in _takes) {
       await practice.save(t);
+    }
+    for (final v in _launchHistory) {
+      await db.insert(AppConstants.versionsTable, v.toMap());
     }
     final settings = SettingsRepository();
     await settings.saveSettings(
@@ -186,6 +194,56 @@ class Showcase {
       ),
     );
   }
+
+  /// The keynote's history: a rough first draft, an edit, an Assist rewrite
+  /// and a final touch that matches the script now.
+  static final _launchHistory = [
+    ScriptVersion(
+      id: 'v1',
+      documentId: 'demo-launch',
+      createdAt: _now.subtract(const Duration(days: 5, hours: 4)),
+      title: 'Product launch keynote',
+      kind: VersionKind.original,
+      content:
+          'Today we are announcing a product that our team has been developing for approximately two years.\n\n'
+          'The idea originated from a question: why does the process of planning a trip still require twelve browser tabs and three separate group chats? '
+          'We decided to build a single place where an entire group can plan together.\n\n'
+          'It is available today.',
+    ),
+    ScriptVersion(
+      id: 'v2',
+      documentId: 'demo-launch',
+      createdAt: _now.subtract(const Duration(days: 3, hours: 2)),
+      title: 'Product launch keynote',
+      kind: VersionKind.edit,
+      content:
+          'Today we are introducing something we have been working on for two years.\n\n'
+          'It started with a simple question: why does planning a trip still take twelve browser tabs and three group chats? '
+          'So we built one place where your whole group can plan together, vote on ideas, and book in a single tap.\n\n'
+          'It is available today, on every platform.',
+    ),
+    ScriptVersion(
+      id: 'v3',
+      documentId: 'demo-launch',
+      createdAt: _now.subtract(const Duration(days: 1, hours: 5)),
+      title: 'Product launch keynote',
+      kind: VersionKind.assist,
+      label: 'Make it sound spoken',
+      content:
+          "Today we're introducing something we've spent two years on.\n\n"
+          'It started with one question: why does planning a trip still take twelve browser tabs and three group chats? '
+          'So we built one place where your whole group plans together, votes on ideas, and books in a single tap.\n\n'
+          "It's out today, on every platform.",
+    ),
+    ScriptVersion(
+      id: 'v4',
+      documentId: 'demo-launch',
+      createdAt: _now.subtract(const Duration(days: 1, hours: 3)),
+      title: 'Product launch keynote',
+      kind: VersionKind.edit,
+      content: _docs[2].content,
+    ),
+  ];
 
   static Widget? home() {
     final doc = _docs.first;
@@ -209,6 +267,18 @@ class Showcase {
           document: doc,
           warmUp: false,
           onLoaded: _stageSummary,
+        );
+      case 'menu':
+        return const DocumentListScreen(showcaseMenuFor: 'demo-launch');
+      case 'dialog':
+        return const _DialogScene();
+      case 'versions':
+        return VersionsScreen(document: _docs[2], onRestore: (_) async {});
+      case 'version-diff':
+        return VersionDetailScreen(
+          document: _docs[2],
+          version: _launchHistory.first,
+          onRestore: (_) async {},
         );
       default:
         return const DocumentListScreen();
@@ -298,4 +368,34 @@ class _AssistSceneState extends State<_AssistScene> {
 
   @override
   Widget build(BuildContext context) => EditorScreen(document: widget.document);
+}
+
+/// The library with the delete confirmation open.
+class _DialogScene extends StatefulWidget {
+  const _DialogScene();
+
+  @override
+  State<_DialogScene> createState() => _DialogSceneState();
+}
+
+class _DialogSceneState extends State<_DialogScene> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 1600), () {
+      if (!mounted) return;
+      confirmDialog(
+        context,
+        title: 'Delete "Toast for Sam and Priya"?',
+        message:
+            'The script, its versions and its practice history will be removed from this iPhone.',
+        confirmLabel: 'Delete script',
+        cancelLabel: 'Keep it',
+        destructive: true,
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => const DocumentListScreen();
 }

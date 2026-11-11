@@ -1,27 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - network_info_plus (0.0.1):
-    - Flutter
-  - permission_handler_apple (9.3.0):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - network_info_plus (from `.symlinks/plugins/network_info_plus/ios`)
-  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  network_info_plus:
-    :path: ".symlinks/plugins/network_info_plus/ios"
-  permission_handler_apple:
-    :path: ".symlinks/plugins/permission_handler_apple/ios"
 
 SPEC CHECKSUMS:
   Flutter: 71a624a5bc0c04062bf19101d501e466baf2fb47
-  network_info_plus: 16d8832ab43b7bc22b168d76fffcad9da35486d2
-  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
 
 PODFILE CHECKSUM: 76bfd1269d17811d5c6a3d41f4f44bc6e9ce6728
 

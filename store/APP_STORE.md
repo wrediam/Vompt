@@ -9,16 +9,11 @@ Everything to enter in App Store Connect, field by field. Character counts are c
 3. **Build numbers.** Every upload needs a higher build number than the last. They are date-based: `version: 1.0.0+2026110701` in `vompt/pubspec.yaml` means 1.0.0 (2026110701); the next upload that day is `...02`, the next day `2026110801`.
 4. **Upload a build:**
    ```bash
-   cd vompt
-   flutter build ipa --release
+   cd vompt && flutter build ipa --release && cd ..
+   tools/upload_ios.sh
    ```
-   Then either drag `build/ios/ipa/*.ipa` into Transporter, or upload straight from the archive with
-   `xcodebuild -exportArchive -archivePath build/ios/archive/Runner.xcarchive -exportOptionsPlist <plist> -allowProvisioningUpdates`,
-   where the plist sets `method` to `app-store-connect`, `destination` to `upload` and your `teamID`.
+   The script uploads with the Apple ID signed in to Xcode. If it says "Failed to Use Accounts", sign in again in Xcode > Settings > Accounts, or drag `vompt/build/ios/ipa/Vompt.ipa` into Transporter and choose Deliver.
    The build appears in App Store Connect under TestFlight after processing (usually 10 to 30 minutes).
-
-   If the export stops with "Copy failed", a Homebrew `rsync` is shadowing the system one. Run the
-   `xcodebuild` command with `env PATH=/usr/bin:/bin:/usr/sbin:/sbin` in front of it.
 
 ## App information
 
@@ -53,7 +48,7 @@ Your voice runs the prompter. It scrolls as you speak, takes direction from your
 ```
 (154 characters)
 
-**Description** (4000). Copy from [description.txt](description.txt) (2,379 characters). It leads with voice tracking, the browser remote and on-device AI.
+**Description** (4000). Copy from [description.txt](description.txt) (2,772 characters). It leads with voice tracking, the browser remote and on-device AI.
 
 **Keywords** (100). Words in the name are already indexed, so they're not repeated:
 
@@ -95,6 +90,7 @@ Upload the captioned sets from `store/marketing/` (made by `tools/marketing.py`)
 | 3 | Rewrite with on-device AI. | `iphone-6.3/3-ai.png` | `iphone-6.9/3-ai.png` | `ipad-13/3-ai.png` |
 | 4 | Counts every um and uh. | `iphone-6.3/4-fillers.png` | `iphone-6.9/4-fillers.png` | `ipad-13/4-fillers.png` |
 | 5 | Watch the ums drop. | `iphone-6.3/5-progress.png` | `iphone-6.9/5-progress.png` | `ipad-13/5-progress.png` |
+| 6 | Every draft, kept. | `iphone-6.3/6-versions.png` | `iphone-6.9/6-versions.png` | `ipad-13/6-versions.png` |
 
 The first three show in search results, so the order matters.
 

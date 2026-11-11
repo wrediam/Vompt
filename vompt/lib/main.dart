@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'app.dart';
 import 'showcase.dart';
@@ -11,9 +11,9 @@ Future<void> main() async {
   // Set system UI to dark immediately
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: Color(0xFF16161D),
+      statusBarColor: Color(0xFF131312),
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Color(0xFF16161D),
+      systemNavigationBarColor: Color(0xFF131312),
       systemNavigationBarIconBrightness: Brightness.light,
     ),
   );

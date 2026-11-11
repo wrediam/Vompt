@@ -13,12 +13,12 @@
   font-display: swap;
 }
 :root {
-  --ink: #16161D;
-  --raised: #20212A;
-  --raised-2: #282A35;
-  --line: #2E3039;
-  --paper: #ECEAE4;
-  --muted: #8C8E9B;
+  --ink: #131312;
+  --raised: #1F1E1C;
+  --raised-2: #2A2926;
+  --line: #363430;
+  --paper: #F2EFE8;
+  --muted: #A09B92;
   --tally: #F2493B;
   --cue: #FFC24A;
   --on-cue: #1C1607;
@@ -172,6 +172,49 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
 .warn { color: var(--tally); font-weight: 600; }
 .note { color: var(--muted); font-size: 13px; }
 
+/* ---- Changes, versions, dialogs, motion ---- */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes pop { from { opacity: 0; transform: translateY(24px) scale(.94); } }
+@keyframes wash { from { background-color: transparent; text-decoration-color: transparent; } }
+.btn, .tool, .version, .hook { transition: transform .14s ease, background-color .15s, border-color .15s; }
+.btn:active, .tool:active, .version:active, .hook:active { transform: scale(.97); }
+.btn.danger { background: var(--tally); border-color: var(--tally); color: #fff; }
+.scripts.entering li { animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+.diff .add { background: rgba(255,194,74,.26); text-decoration: underline 2px var(--cue); border-radius: 2px; animation: wash .9s ease-out both; }
+.diff .del { color: rgba(242,73,59,.82); text-decoration: line-through 2px var(--tally); }
+.counts { font-size: 13px; font-weight: 700; }
+.counts .plus { color: var(--cue); }
+.counts .minus { color: var(--tally); margin-left: 10px; }
+.seg { display: inline-flex; gap: 2px; background: var(--raised-2); border-radius: 999px; padding: 3px; margin-top: 12px; }
+.seg button { border: 0; background: none; padding: 7px 14px; border-radius: 999px; font-weight: 700; font-size: 13px; color: var(--muted); cursor: pointer; transition: background-color .2s, color .2s; }
+.seg button[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
+.timeline { list-style: none; margin: 4px 0 0; padding: 0; }
+.timeline li { position: relative; padding-left: 30px; animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+.timeline li::before { content: ""; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--line); }
+.timeline li:first-child::before { top: 24px; }
+.timeline li:last-child::before { bottom: auto; height: 24px; }
+.timeline li:only-child::before { display: none; }
+.node { position: absolute; left: 2px; top: 18px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--paper); background: var(--ink); }
+.node.assist { border-color: var(--cue); }
+.node.current { background: var(--cue); border-color: var(--cue); box-shadow: 0 0 12px rgba(255,194,74,.55); }
+.version { width: 100%; text-align: left; background: var(--raised); border: 1.5px solid var(--line); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; cursor: pointer; display: block; }
+.version:hover { border-color: var(--muted); }
+.version.current { background: var(--raised-2); border-color: rgba(255,194,74,.5); }
+.version b { font-weight: 700; }
+.version .m { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+.version .x { color: var(--muted); font-size: 14px; margin-top: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.badge { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: rgba(255,194,74,.16); color: var(--cue); font-size: 12px; font-weight: 800; }
+.back { background: none; border: 0; color: var(--muted); font-weight: 700; cursor: pointer; padding: 0; margin-bottom: 12px; }
+.back:hover { color: var(--paper); }
+.modal { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 24px; background: rgba(0,0,0,.5); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); animation: fade .25s ease-out both; }
+.modal-card { --accent: var(--cue); background: var(--raised); border: 1px solid var(--line); border-radius: 26px; padding: 26px 24px 14px; max-width: 400px; width: 100%; box-shadow: 0 18px 40px rgba(0,0,0,.6); animation: pop .4s cubic-bezier(.2,1.25,.4,1) both; }
+.modal-card h2 { margin: 0; font-size: 21px; line-height: 1.25; display: flex; gap: 10px; align-items: baseline; }
+.modal-card h2::before { content: ""; flex: none; border-left: 10px solid var(--accent); border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+.modal-card p { color: var(--muted); margin: 10px 0 0 20px; }
+.modal-card .actions { display: grid; gap: 4px; margin-top: 22px; }
+.modal-card .actions .btn { min-height: 50px; font-size: 16px; }
+
 /* ---- Live ---- */
 .status-line { display: flex; align-items: center; gap: 10px; font-weight: 700; margin-bottom: 14px; }
 .status-line .meter { display: flex; align-items: flex-end; gap: 2px; height: 16px; margin-left: 4px; }
@@ -290,6 +333,7 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" id="tabAssist" aria-selected="true" aria-controls="assist">Assist</button>
       <button class="tab" role="tab" id="tabLive" aria-selected="false" aria-controls="live">Live</button>
+      <button class="tab" role="tab" id="tabVersions" aria-selected="false" aria-controls="versions">Versions</button>
     </div>
 
     <div class="panel" id="assist" role="tabpanel" aria-labelledby="tabAssist">
@@ -317,6 +361,10 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
       </div>
       <p class="note">Target length applies to Fit to a length and Draft from notes. Assist runs on the iPhone; nothing goes to a server.</p>
       <div id="assistOut"></div>
+    </div>
+
+    <div class="panel" id="versions" role="tabpanel" aria-labelledby="tabVersions" hidden>
+      <div id="versionsBody"><p class="lede">Pick a script to see its versions.</p></div>
     </div>
 
     <div class="panel" id="live" role="tabpanel" aria-labelledby="tabLive" hidden>
@@ -354,7 +402,7 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
   <nav class="mobile-tabs" aria-label="Views">
     <button data-view="lib" aria-selected="false">Scripts</button>
     <button data-view="edit" aria-selected="true">Write</button>
-    <button data-view="side" aria-selected="false">Assist &amp; live</button>
+    <button data-view="side" aria-selected="false">Tools</button>
   </nav>
 </div>
 
@@ -441,6 +489,128 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
     return n;
   };
 
+  // ---------- Dialogs ----------
+  function vomptConfirm({ title, message, confirmLabel, cancelLabel = "Cancel", destructive = false }) {
+    return new Promise((resolve) => {
+      const ok = el("button", { className: `btn ${destructive ? "danger" : "primary"}`, type: "button", textContent: confirmLabel });
+      const no = el("button", { className: "btn quiet", type: "button", textContent: cancelLabel });
+      const card = el("div", { className: "modal-card" }, el("h2", { textContent: title }), el("p", { textContent: message }), el("div", { className: "actions" }, ok, no));
+      if (destructive) card.style.setProperty("--accent", "var(--tally)");
+      const modal = el("div", { className: "modal" }, card);
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-modal", "true");
+      const onKey = (e) => { if (e.key === "Escape") close(false); };
+      const close = (v) => { modal.remove(); document.removeEventListener("keydown", onKey); resolve(v); };
+      modal.addEventListener("click", (e) => { if (e.target === modal) close(false); });
+      ok.onclick = () => close(true);
+      no.onclick = () => close(false);
+      document.addEventListener("keydown", onKey);
+      document.body.append(modal);
+      ok.focus();
+    });
+  }
+
+  // ---------- Word diff (same algorithm as the app: Hirschberg LCS) ----------
+  function tokenize(text) {
+    const words = [], gaps = [];
+    let gap = "";
+    for (const m of text.matchAll(/\s+|\S+/g)) {
+      if (!m[0].trim()) gap += m[0];
+      else { words.push(m[0]); gaps.push(gap); gap = ""; }
+    }
+    return { words, gaps, tail: gap };
+  }
+  function lcsRow(a, aLo, aHi, b, bLo, bHi, backward) {
+    const m = bHi - bLo;
+    let prev = new Int32Array(m + 1), curr = new Int32Array(m + 1);
+    for (let n = 0; n < aHi - aLo; n++) {
+      const ai = a[backward ? aHi - 1 - n : aLo + n];
+      for (let k = 1; k <= m; k++) {
+        const bk = b[backward ? bHi - k : bLo + k - 1];
+        curr[k] = ai === bk ? prev[k - 1] + 1 : Math.max(prev[k], curr[k - 1]);
+      }
+      [prev, curr] = [curr, prev];
+    }
+    return prev;
+  }
+  function hirschberg(a, aLo, aHi, b, bLo, bHi, keepA, keepB) {
+    const n = aHi - aLo, m = bHi - bLo;
+    if (!n || !m) return;
+    if (n === 1) {
+      for (let j = bLo; j < bHi; j++) if (a[aLo] === b[j]) { keepA[aLo] = keepB[j] = 1; return; }
+      return;
+    }
+    const mid = aLo + (n >> 1);
+    const f = lcsRow(a, aLo, mid, b, bLo, bHi, false), g = lcsRow(a, mid, aHi, b, bLo, bHi, true);
+    let split = 0, best = -1;
+    for (let k = 0; k <= m; k++) { const t = f[k] + g[m - k]; if (t > best) { best = t; split = k; } }
+    hirschberg(a, aLo, mid, b, bLo, bLo + split, keepA, keepB);
+    hirschberg(a, mid, aHi, b, bLo + split, bHi, keepA, keepB);
+  }
+  function wordDiff(before, after) {
+    const A = tokenize(before), B = tokenize(after), ids = new Map();
+    const id = (w) => { if (!ids.has(w)) ids.set(w, ids.size); return ids.get(w); };
+    const a = Int32Array.from(A.words, id), b = Int32Array.from(B.words, id);
+    const keepA = new Uint8Array(a.length), keepB = new Uint8Array(b.length);
+    let lo = 0;
+    while (lo < a.length && lo < b.length && a[lo] === b[lo]) { keepA[lo] = keepB[lo] = 1; lo++; }
+    let hiA = a.length, hiB = b.length;
+    while (hiA > lo && hiB > lo && a[hiA - 1] === b[hiB - 1]) { hiA--; hiB--; keepA[hiA] = keepB[hiB] = 1; }
+    hirschberg(a, lo, hiA, b, lo, hiB, keepA, keepB);
+    const spans = [];
+    const push = (op, text) => { const last = spans[spans.length - 1]; if (last && last.op === op) last.text += text; else spans.push({ op, text }); };
+    const add = (op, gap, word) => {
+      if (op === "del" || (spans.length && spans[spans.length - 1].op === op)) { push(op, gap + word); return; }
+      if (gap) push("same", gap);
+      push(op, word);
+    };
+    let i = 0, j = 0, added = 0, removed = 0;
+    while (i < a.length || j < b.length) {
+      if (i < a.length && !keepA[i]) { add("del", A.gaps[i], A.words[i]); removed++; i++; }
+      else if (j < b.length && !keepB[j]) { add("add", B.gaps[j], B.words[j]); added++; j++; }
+      else { add("same", B.gaps[j], B.words[j]); i++; j++; }
+    }
+    if (B.tail) push("same", B.tail);
+    return { spans, added, removed };
+  }
+  function renderDiff(d) {
+    const box = el("div", { className: "diff" });
+    for (const s of d.spans) {
+      if (s.op === "same") box.append(s.text);
+      else if (s.op === "add") box.append(el("span", { className: "add", textContent: s.text }));
+      else {
+        const lead = s.text.match(/^\s*/)[0];
+        if (lead) box.append(lead);
+        box.append(el("span", { className: "del", textContent: s.text.slice(lead.length) }));
+      }
+    }
+    return box;
+  }
+  function countsEl(d, suffix = "") {
+    const box = el("span", { className: "counts" });
+    if (!d.added && !d.removed) { box.textContent = "No changes"; return box; }
+    if (d.added) box.append(el("span", { className: "plus", textContent: `+${d.added} ${d.added === 1 ? "word" : "words"}` }));
+    if (d.removed) box.append(el("span", { className: "minus", textContent: `\u2212${d.removed} ${d.removed === 1 ? "word" : "words"}` }));
+    if (suffix) box.append(el("span", { className: "note", textContent: ` ${suffix}` }));
+    return box;
+  }
+  /** A toggle between a diff and plain text, filling `view`. */
+  function diffToggle(d, plain, labels, startWithChanges, view) {
+    const seg = el("div", { className: "seg" });
+    const b1 = el("button", { type: "button", textContent: labels[0] });
+    const b2 = el("button", { type: "button", textContent: labels[1] });
+    seg.append(b1, b2);
+    const show = (changes) => {
+      b1.setAttribute("aria-pressed", String(changes));
+      b2.setAttribute("aria-pressed", String(!changes));
+      view.replaceChildren(changes ? renderDiff(d) : document.createTextNode(plain));
+    };
+    b1.onclick = () => show(true);
+    b2.onclick = () => show(false);
+    show(startWithChanges);
+    return seg;
+  }
+
   // ---------- Library ----------
   async function loadDocs(selectId) {
     try {
@@ -455,6 +625,12 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
     const q = $("search").value.trim().toLowerCase();
     const list = $("scripts");
     list.replaceChildren();
+    // Rows rise in once, when the library first appears.
+    if (!state.listShown && state.docs.length) {
+      state.listShown = true;
+      list.classList.add("entering");
+      setTimeout(() => list.classList.remove("entering"), 1400);
+    }
     const shown = state.docs.filter((d) => !q || d.title.toLowerCase().includes(q) || d.content.toLowerCase().includes(q));
     if (!shown.length) {
       list.append(el("li", { className: "empty-note", textContent: state.docs.length ? "No script matches." : "No scripts yet." }));
@@ -468,7 +644,9 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
       const btn = el("button", { type: "button" }, el("span", { className: "t", textContent: d.title }), meta);
       btn.setAttribute("aria-current", String(state.current && state.current.id === d.id));
       btn.onclick = () => { openDoc(d.id); setView("edit"); };
-      list.append(el("li", {}, btn));
+      const li = el("li", {}, btn);
+      if (list.classList.contains("entering")) li.style.animationDelay = `${Math.min(list.children.length, 10) * 50}ms`;
+      list.append(li);
     }
   }
 
@@ -488,6 +666,7 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
     setSaveState("Saved");
     renderList();
     renderTools();
+    if (state.tab === "versions") loadVersions();
   }
 
   async function newDoc(content = "") {
@@ -503,7 +682,15 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
 
   async function deleteDoc() {
     const doc = state.current;
-    if (!doc || !confirm(`Delete "${doc.title}" from the iPhone? Its practice history goes too.`)) return;
+    if (!doc) return;
+    const ok = await vomptConfirm({
+      title: `Delete "${doc.title}"?`,
+      message: "It is removed from the iPhone too, with its versions and practice history.",
+      confirmLabel: "Delete script",
+      cancelLabel: "Keep it",
+      destructive: true,
+    });
+    if (!ok) return;
     try {
       clearTimeout(state.saveTimer);
       state.dirty = false;
@@ -534,18 +721,18 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
     clearTimeout(state.saveTimer);
     state.saveTimer = setTimeout(flushSave, 800);
   }
-  async function flushSave() {
+  async function flushSave(extra) {
     clearTimeout(state.saveTimer);
     const doc = state.current;
-    if (!doc || !state.dirty) return;
-    if (state.saving) { state.saveTimer = setTimeout(flushSave, 300); return; }
+    if (!doc || (!state.dirty && !extra)) return;
+    if (state.saving) { state.saveTimer = setTimeout(() => flushSave(extra), 300); return; }
     state.saving = true;
     state.dirty = false;
     setSaveState("Saving");
     const title = $("title").value.trim() || "Untitled script";
     const content = $("script").value;
     try {
-      const saved = await api(`/api/documents/${doc.id}/content`, { method: "POST", body: { title, content } });
+      const saved = await api(`/api/documents/${doc.id}/content`, { method: "POST", body: { title, content, ...(extra || {}) } });
       const i = state.docs.findIndex((d) => d.id === doc.id);
       if (i >= 0) state.docs[i] = saved;
       if (state.current && state.current.id === doc.id) Object.assign(state.current, saved);
@@ -615,17 +802,22 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
       out.append(el("div", { className: "result-head" }, el("h3", { textContent: label }), el("span", { textContent: "Click one to put it at the top" })));
       for (const line of result.split("\n").filter((l) => l.trim())) {
         const b = el("button", { className: "hook", type: "button", textContent: line.trim() });
-        b.onclick = () => applyText(`${line.trim()}\n\n${$("script").value}`, before, "Opening line added");
+        b.onclick = () => applyText(`${line.trim()}\n\n${$("script").value}`, before, "Opening line added", "Opening line");
         out.append(b);
       }
       return;
     }
+    const d = wordDiff(before, result);
+    const view = el("div", { className: "result" });
+    // A draft replaces notes rather than editing them, so it opens clean.
+    const seg = diffToggle(d, result, ["Changes", "New version"], task !== "draft", view);
     out.append(
-      el("div", { className: "result-head" }, el("h3", { textContent: label }), el("span", { textContent: `${words(result)} words` })),
-      el("div", { className: "result", textContent: result }),
+      el("div", { className: "result-head" }, el("h3", { textContent: label }), countsEl(d)),
+      seg,
+      view,
     );
-    const use = el("button", { className: "btn primary small", type: "button", textContent: "Replace script" });
-    use.onclick = () => applyText(result, before, "Script replaced");
+    const use = el("button", { className: "btn primary small", type: "button", textContent: "Use this" });
+    use.onclick = () => applyText(result, before, "Rewritten. The original is in Versions.", label);
     const copy = el("button", { className: "btn small", type: "button", textContent: "Copy" });
     copy.onclick = () => navigator.clipboard.writeText(result).then(() => banner("Copied"), report);
     const again = el("button", { className: "btn quiet small", type: "button", textContent: "Try again" });
@@ -633,11 +825,89 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
     out.append(el("div", { className: "row", style: "margin-top:12px" }, use, copy, again));
   }
 
-  function applyText(next, before, message) {
+  /** Puts Assist's text in the editor and saves it as its own version. */
+  async function applyText(next, before, message, assistLabel) {
     $("script").value = next;
-    edited();
+    updateCounts();
     $("assistOut").replaceChildren();
+    state.dirty = true;
+    await flushSave({ assist: assistLabel });
     banner(message, "Undo", () => { $("script").value = before; edited(); });
+  }
+
+  // ---------- Versions ----------
+  async function loadVersions() {
+    const body = $("versionsBody");
+    const doc = state.current;
+    if (!doc) { body.replaceChildren(el("p", { className: "lede", textContent: "Pick a script to see its versions." })); return; }
+    await flushSave();
+    try {
+      const versions = await api(`/api/documents/${doc.id}/versions`);
+      if (!state.current || state.current.id !== doc.id) return;
+      const current = $("script").value;
+      const lede = el("p", { className: "lede", textContent: versions.length
+        ? `${versions.length} ${versions.length === 1 ? "version" : "versions"}. Click one to compare it with the script now.`
+        : "Versions appear as you edit and use Assist." });
+      const list = el("ol", { className: "timeline" });
+      versions.forEach((v, i) => {
+        const older = versions[i + 1];
+        const isCurrent = v.content === current;
+        const delta = older ? v.wordCount - older.wordCount : 0;
+        const head = el("b", { textContent: v.headline });
+        if (isCurrent) head.append(el("span", { className: "badge", textContent: "Current" }));
+        const meta = el("span", { className: "m", textContent: `${v.when}, ${v.wordCount} words${delta ? (delta > 0 ? `, +${delta}` : `, \u2212${-delta}`) : ""}` });
+        const card = el("button", { className: `version${isCurrent ? " current" : ""}`, type: "button" }, head, meta,
+          el("span", { className: "x", textContent: v.content.trim().replace(/\s+/g, " ") }));
+        card.onclick = () => showVersion(v);
+        const node = el("i", { className: `node${isCurrent ? " current" : v.kind === "assist" ? " assist" : ""}` });
+        const li = el("li", {}, node, card);
+        li.style.animationDelay = `${Math.min(i, 12) * 40}ms`;
+        list.append(li);
+      });
+      body.replaceChildren(lede, list);
+    } catch (e) { report(e); }
+  }
+
+  function showVersion(v) {
+    const body = $("versionsBody");
+    const current = $("script").value;
+    const back = el("button", { className: "back", type: "button", textContent: "\u2190 All versions" });
+    back.onclick = loadVersions;
+    const head = el("div", { className: "result-head" }, el("h3", { textContent: v.headline }), el("span", { textContent: v.when }));
+    if (v.content === current) {
+      body.replaceChildren(back, head, el("p", { className: "lede", textContent: "This is the script now." }), el("div", { className: "result", textContent: v.content }));
+      return;
+    }
+    const d = wordDiff(v.content, current);
+    const view = el("div", { className: "result" });
+    const seg = diffToggle(d, v.content, ["What changed since", "This version"], true, view);
+    const restore = el("button", { className: "btn primary small", type: "button", textContent: "Restore this version" });
+    restore.onclick = async () => {
+      const ok = await vomptConfirm({
+        title: "Restore this version?",
+        message: "The script now is saved as a version first, so you can switch back any time.",
+        confirmLabel: "Restore",
+      });
+      if (!ok) return;
+      try {
+        await flushSave();
+        const saved = await api(`/api/documents/${state.current.id}/restore`, { method: "POST", body: { versionId: v.id } });
+        $("script").value = saved.content;
+        Object.assign(state.current, saved);
+        const i = state.docs.findIndex((x) => x.id === saved.id);
+        if (i >= 0) state.docs[i] = saved;
+        state.dirty = false;
+        updateCounts();
+        setSaveState("Saved");
+        renderList();
+        banner("Version restored. The text before it is in Versions.");
+        loadVersions();
+      } catch (e) { report(e); }
+    };
+    const copy = el("button", { className: "btn small", type: "button", textContent: "Copy" });
+    copy.onclick = () => navigator.clipboard.writeText(v.content).then(() => banner("Copied"), report);
+    body.replaceChildren(back, head, el("div", {}, countsEl(d, "since this version")), seg, view,
+      el("div", { className: "row", style: "margin-top:12px" }, restore, copy));
   }
 
   // ---------- Live ----------
@@ -831,12 +1101,13 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
 
   // ---------- Views ----------
   function selectTab(which) {
-    const live = which === "live";
-    $("tabAssist").setAttribute("aria-selected", String(!live));
-    $("tabLive").setAttribute("aria-selected", String(live));
-    $("assist").hidden = live;
-    $("live").hidden = !live;
-    if (live && state.live) paintLive(state.live);
+    state.tab = which;
+    for (const [tab, panel] of [["tabAssist", "assist"], ["tabLive", "live"], ["tabVersions", "versions"]]) {
+      $(tab).setAttribute("aria-selected", String(panel === which));
+      $(panel).hidden = panel !== which;
+    }
+    if (which === "live" && state.live) paintLive(state.live);
+    if (which === "versions") loadVersions();
   }
   function setView(view) {
     $("app").dataset.view = view;
@@ -854,6 +1125,7 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
   $("sendBtn").onclick = sendToPrompter;
   $("tabAssist").onclick = () => selectTab("assist");
   $("tabLive").onclick = () => selectTab("live");
+  $("tabVersions").onclick = () => selectTab("versions");
   document.querySelectorAll(".mobile-tabs button").forEach((b) => { b.onclick = () => setView(b.dataset.view); });
   $("playBtn").onclick = () => control(state.live && state.live.status === "listening" ? "pause" : "play");
   $("finishBtn").onclick = () => control("finish");
@@ -879,8 +1151,9 @@ select.field { appearance: none; padding-right: 30px; background-image: linear-g
   api("/api/client/connect", { method: "POST" }).then(() => setPresence(true), () => setPresence(false));
   loadDocs().then(() => { if (state.docs[0] && innerWidth > 900) openDoc(state.docs[0].id); });
   checkAI();
-  // studio/#live opens straight to the prompter controls.
-  if (location.hash === "#live") { selectTab("live"); setView("side"); }
+  // studio/#live and studio/#versions open straight to those tabs.
+  const startTab = location.hash.slice(1);
+  if (startTab === "live" || startTab === "versions") { selectTab(startTab); setView("side"); }
   setInterval(heartbeat, 3000);
   setInterval(poll, 400);
   poll();

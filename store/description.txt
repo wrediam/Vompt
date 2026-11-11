@@ -20,7 +20,10 @@ Assist uses Apple Intelligence on your iPhone, in the app and in Studio:
 • Fix spelling and grammar
 • Suggest opening lines that hook viewers
 • Draft a script from your bullet points
-After each take, it also writes short coaching notes from your results. Your script never leaves the device.
+Before you use a rewrite, Assist shows exactly what it changed: added words highlighted, removed words struck through. After each take, it also writes short coaching notes from your results. Your script never leaves the device.
+
+EVERY DRAFT, KEPT
+Vompt saves a version as you edit and every time Assist rewrites your script. Browse them on a timeline, compare any version with your script now, word by word, and bring it back in a tap. Restoring saves your current text first, so nothing is ever lost.
 
 HOW YOUR TAKE WENT
 • Pace in words a minute, compared with a comfortable 130 to 165
