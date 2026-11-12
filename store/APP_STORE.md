@@ -126,6 +126,22 @@ The Remote button turns on an optional local web page (Vompt Studio) so a comput
 
 Answered in the build (`ITSAppUsesNonExemptEncryption = NO` in Info.plist): the app uses no encryption beyond what iOS provides, so App Store Connect won't ask on each upload.
 
-## What's New (for later versions)
+## What's New
 
-Version 1.0 has none. For updates, describe changes in plain language, for example: `Tracking recovers faster after you skip a line. Fixed: text size resets after a take.`
+### 1.1.0 (build 2026111201)
+
+In App Store Connect: App Store tab > **+** next to iOS App > **Version** `1.1.0`, select build 2026111201, and paste (451 characters):
+
+```
+Vompt now keeps every draft. Compare any version with your script, word by word, and bring it back in a tap.
+
+Assist shows exactly what it changed before you use a rewrite: added words highlighted, removed words struck through.
+
+A fresh look: new menus and dialogs, smoother motion, deeper colors and a higher-contrast icon.
+
+Vompt Studio gets a Versions tab and the same change view for Assist.
+
+Plus the latest iOS frameworks and many smaller fixes.
+```
+
+Each release needs a version number higher than the last approved one (1.0.0 was approved, so this is 1.1.0), and every upload a higher build number. Both live in `vompt/pubspec.yaml` as `version: 1.1.0+2026111201`.
